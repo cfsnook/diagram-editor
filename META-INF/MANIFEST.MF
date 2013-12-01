@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Diagram-editor
+Bundle-SymbolicName: diagram-editor;singleton:=true
+Bundle-Version: 1.0.0.1
+Bundle-Activator: ac.soton.eventb.diagrameditor.Activator
+Bundle-Vendor: University of Southampton
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.graphiti;bundle-version="0.8.2",
+ org.eclipse.graphiti.ui;bundle-version="0.8.2",
+ org.eclipse.core.resources;bundle-version="3.7.101",
+ org.eventb.emf.core;bundle-version="2.2.5",
+ org.eclipse.emf.transaction;bundle-version="1.4.0",
+ org.rodinp.core,
+ org.eventb.emf.persistence,
+ org.eclipse.emf.common,
+ org.eclipse.emf.ecore,
+ org.eclipse.ui.ide
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
