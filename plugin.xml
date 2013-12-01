@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.graphiti.ui.diagramTypeProviders">
+      <diagramTypeProvider
+            class="ac.soton.eventb.diagrameditor.DiagramTypeProvider"
+            id="diagram-editor.diagramTypeProvider"
+            name="diagram-editor.diagramTypeProvider">
+         <diagramType
+               id="diagram-editor.diagramType2">
+         </diagramType>
+      </diagramTypeProvider>
+   </extension>
+   <extension
+         point="org.eclipse.graphiti.ui.diagramTypes">
+      <diagramType
+            id="diagram-editor.diagramType2"
+            name="diagram-editor.diagramType2"
+            type="diagram-editor.diagramType2">
+      </diagramType>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.graphiti.ui.editor.DiagramEditor"
+            default="false"
+            extensions="diagram"
+            icon="icon.png"
+            id="diagram-editor.diagram-editor"
+            name="Diagram Editor">
+      </editor>
+   </extension>
+
+</plugin>
