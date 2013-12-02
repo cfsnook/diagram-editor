@@ -1,8 +1,5 @@
 package ac.soton.eventb.diagrameditor.features;
 
-import java.util.logging.Logger;
-
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IDirectEditingContext;
 import org.eclipse.graphiti.features.impl.AbstractDirectEditingFeature;
@@ -12,8 +9,6 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eventb.emf.core.EventBNamed;
 import org.eventb.emf.core.EventBNamedCommentedElement;
-
-import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
 
 public class EventBComponentDirectEditFeature extends
 		AbstractDirectEditingFeature {

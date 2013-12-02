@@ -1,9 +1,5 @@
 package ac.soton.eventb.diagrameditor.features.add;
 
-import java.util.logging.Logger;
-
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.features.impl.AbstractAddShapeFeature;
@@ -20,7 +16,6 @@ import org.eclipse.graphiti.services.IPeCreateService;
 import org.eclipse.graphiti.util.ColorConstant;
 import org.eclipse.graphiti.util.IColorConstant;
 import org.eventb.emf.core.EventBNamedCommentedElement;
-import org.eventb.emf.core.Project;
 
 public class EventBComponentAddFeature extends AbstractAddShapeFeature {
 

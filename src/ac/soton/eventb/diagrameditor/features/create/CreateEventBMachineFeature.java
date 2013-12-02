@@ -1,7 +1,5 @@
 package ac.soton.eventb.diagrameditor.features.create;
 
-import java.util.logging.Logger;
-
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateFeature;

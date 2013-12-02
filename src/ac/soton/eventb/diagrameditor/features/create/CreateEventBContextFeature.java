@@ -1,14 +1,11 @@
 package ac.soton.eventb.diagrameditor.features.create;
 
-import java.util.logging.Logger;
-
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eventb.emf.core.context.Context;
 import org.eventb.emf.core.context.ContextFactory;
-
 
 import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
 

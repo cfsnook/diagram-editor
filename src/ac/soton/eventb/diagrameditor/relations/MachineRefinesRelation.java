@@ -5,8 +5,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eventb.emf.core.machine.Machine;
 import org.eventb.emf.persistence.ProjectResource;
 
-import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
-
 public class MachineRefinesRelation implements EventBRelation {
 	Machine source;
 	Machine target;

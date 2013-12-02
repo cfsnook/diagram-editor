@@ -1,8 +1,5 @@
 package ac.soton.eventb.diagrameditor.features;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IDeleteContext;

@@ -3,7 +3,6 @@ package ac.soton.eventb.diagrameditor.relations;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eventb.emf.core.context.Context;
-import org.eventb.emf.core.machine.Machine;
 import org.eventb.emf.persistence.ProjectResource;
 
 public class ContextExtendsRelation implements EventBRelation {
