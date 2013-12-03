@@ -20,8 +20,8 @@ public class ContextExtendsRelation implements EventBRelation {
 	}
 
 	public ContextExtendsRelation(String key, ProjectResource pr) {
-		final String[] keys = key.substring("extends:".length()).split(
-				"<!extends!>");
+		final String[] keys = key.substring("extends:".length()).split( //$NON-NLS-1$
+				"<!extends!>"); //$NON-NLS-1$
 		this.source = (Context) pr.getEObject(URI.createURI(keys[0], true)
 				.fragment());
 		this.target = (Context) pr.getEObject(URI.createURI(keys[1], true)
@@ -36,8 +36,8 @@ public class ContextExtendsRelation implements EventBRelation {
 
 	@Override
 	public String getKey() {
-		return "extends:" + EcoreUtil.getURI(this.getSource()).toString()
-				+ "<!extends!>" + EcoreUtil.getURI(this.getTarget()).toString();
+		return "extends:" + EcoreUtil.getURI(this.getSource()).toString() //$NON-NLS-1$
+				+ "<!extends!>" + EcoreUtil.getURI(this.getTarget()).toString(); //$NON-NLS-1$
 	}
 
 	public Context getSource() {

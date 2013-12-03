@@ -19,7 +19,7 @@ public class MachineSeesRelation implements EventBRelation {
 	}
 
 	public MachineSeesRelation(String key, ProjectResource pr) {
-		final String[] keys = key.substring("sees:".length()).split("<!sees!>");
+		final String[] keys = key.substring("sees:".length()).split("<!sees!>"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.source = (Machine) pr.getEObject(URI.createURI(keys[0], true)
 				.fragment());
 		this.target = (Context) pr.getEObject(URI.createURI(keys[1], true)
@@ -40,8 +40,8 @@ public class MachineSeesRelation implements EventBRelation {
 
 	@Override
 	public String getKey() {
-		return "sees:" + EcoreUtil.getURI(this.getSource()).toString()
-				+ "<!sees!>" + EcoreUtil.getURI(this.getTarget()).toString();
+		return "sees:" + EcoreUtil.getURI(this.getSource()).toString() //$NON-NLS-1$
+				+ "<!sees!>" + EcoreUtil.getURI(this.getTarget()).toString(); //$NON-NLS-1$
 	}
 
 	public Machine getSource() {
@@ -50,5 +50,10 @@ public class MachineSeesRelation implements EventBRelation {
 
 	public Context getTarget() {
 		return this.target;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.source.hashCode() + this.target.hashCode();
 	}
 }

@@ -49,7 +49,7 @@ import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
 
 class CreateEventBContextFeature extends AbstractCreateFeature {
 	public CreateEventBContextFeature(IFeatureProvider fp) {
-		super(fp, "Context", "An EventB Context");
+		super(fp, "Context", "An EventB Context"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	}
 
@@ -63,7 +63,7 @@ class CreateEventBContextFeature extends AbstractCreateFeature {
 	public Object[] create(ICreateContext context) {
 		final Context c = ContextFactory.eINSTANCE.createContext();
 		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
-				.getComponents().add(c);
+		.getComponents().add(c);
 		this.addGraphicalRepresentation(context, c);
 		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
 
@@ -75,7 +75,7 @@ class CreateEventBContextFeature extends AbstractCreateFeature {
 
 class CreateEventBMachineFeature extends AbstractCreateFeature {
 	public CreateEventBMachineFeature(IFeatureProvider fp) {
-		super(fp, "Machine", "An EventB Machine");
+		super(fp, "Machine", "An EventB Machine"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	}
 
@@ -89,7 +89,7 @@ class CreateEventBMachineFeature extends AbstractCreateFeature {
 	public Object[] create(ICreateContext context) {
 		final Machine m = MachineFactory.eINSTANCE.createMachine();
 		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
-				.getComponents().add(m);
+		.getComponents().add(m);
 		this.addGraphicalRepresentation(context, m);
 		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
 
@@ -131,7 +131,7 @@ class EventBComponentAddFeature extends AbstractAddShapeFeature {
 					containerShape, 5, 5);
 			rr.setForeground(this.manageColor(CLASS_FOREGROUND));
 			rr.setBackground(this.manageColor(CLASS_BACKGROUND));
-			rr.setLineWidth(2);
+			rr.setLineWidth(new Integer(2));
 			gaService.setLocationAndSize(rr, context.getX(), context.getY(),
 					width, height);
 			this.link(containerShape, element);
@@ -146,7 +146,7 @@ class EventBComponentAddFeature extends AbstractAddShapeFeature {
 			text.setForeground(this.manageColor(CLASS_FOREGROUND));
 			text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
 			// vertical alignment has as default value "center"
-			text.setFont(gaService.manageFont(this.getDiagram(), "Arial", 10,
+			text.setFont(gaService.manageFont(this.getDiagram(), "Arial", 10, //$NON-NLS-1$
 					false, false));
 			gaService.setLocationAndSize(text, 0, 0, width, 20);
 
@@ -280,7 +280,7 @@ class EventBComponentUpdateFeature extends AbstractUpdateFeature {
 									.getPictogramElement())).doGetName();
 					return ((AbstractText) s.getGraphicsAlgorithm()).getValue()
 							.equals(name) ? Reason.createFalseReason() : Reason
-							.createTrueReason();
+									.createTrueReason();
 				}
 			}
 		}

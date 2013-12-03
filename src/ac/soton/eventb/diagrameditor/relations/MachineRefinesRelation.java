@@ -20,8 +20,8 @@ public class MachineRefinesRelation implements EventBRelation {
 	}
 
 	public MachineRefinesRelation(String key, ProjectResource pr) {
-		final String[] keys = key.substring("refines:".length()).split(
-				"<!refines!>");
+		final String[] keys = key.substring("refines:".length()).split( //$NON-NLS-1$
+				"<!refines!>"); //$NON-NLS-1$
 		this.source = (Machine) pr.getEObject(URI.createURI(keys[0], true)
 				.fragment());
 		this.target = (Machine) pr.getEObject(URI.createURI(keys[1], true)
@@ -35,8 +35,8 @@ public class MachineRefinesRelation implements EventBRelation {
 
 	@Override
 	public String getKey() {
-		return "refines:" + EcoreUtil.getURI(this.getSource()).toString()
-				+ "<!refines!>" + EcoreUtil.getURI(this.getTarget()).toString();
+		return "refines:" + EcoreUtil.getURI(this.getSource()).toString() //$NON-NLS-1$
+				+ "<!refines!>" + EcoreUtil.getURI(this.getTarget()).toString(); //$NON-NLS-1$
 	}
 
 	public Machine getSource() {

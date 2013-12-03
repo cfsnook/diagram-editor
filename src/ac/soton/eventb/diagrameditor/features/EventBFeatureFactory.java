@@ -14,7 +14,7 @@ public class EventBFeatureFactory<C extends IContext, F extends IFeature> {
 
 	public EventBFeatureFactory() {
 		super();
-		this.featureList = new ArrayList<Matcher<C, F>>();
+		this.featureList = new ArrayList<>();
 	}
 
 	public F getFeature(C context, EventBDiagramFeatureProvider f) {

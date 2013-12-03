@@ -49,15 +49,19 @@ import ac.soton.eventb.diagrameditor.relations.MachineSeesRelation;
 public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 
 	private final class EventBIndependenceSolver implements IIndependenceSolver {
+		public EventBIndependenceSolver() {
+			// TODO Auto-generated constructor stub
+		}
+
 		@Override
 		public Object getBusinessObjectForKey(String key) {
-			if (key.startsWith("sees:")) {
+			if (key.startsWith("sees:")) { //$NON-NLS-1$
 				return new MachineSeesRelation(key,
 						EventBDiagramFeatureProvider.this.getProjectResource());
-			} else if (key.startsWith("extends:")) {
+			} else if (key.startsWith("extends:")) { //$NON-NLS-1$
 				return new ContextExtendsRelation(key,
 						EventBDiagramFeatureProvider.this.getProjectResource());
-			} else if (key.startsWith("refines:")) {
+			} else if (key.startsWith("refines:")) { //$NON-NLS-1$
 				return new MachineRefinesRelation(key,
 						EventBDiagramFeatureProvider.this.getProjectResource());
 			} else {
@@ -77,7 +81,7 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 				return ((EventBRelation) bo).getKey();
 
 			} else {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 
 		}
@@ -91,16 +95,16 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 	private final EventBFeatureFactory<IDirectEditingContext, IDirectEditingFeature> eventBDirectEditingFeatureFactory;
 	private final EventBFeatureFactory<IUpdateContext, IUpdateFeature> eventBUpdateFeatureFactory;
 
-	private final ProjectResource pr;
+	final ProjectResource pr;
 
 	public EventBDiagramFeatureProvider(IDiagramTypeProvider dtp) {
 		super(dtp);
 
 		final ResourceSet rs = new ResourceSetImpl();
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
-		.put("*", new ProjectFactory());
+		.put("*", new ProjectFactory()); //$NON-NLS-1$
 		this.pr = (ProjectResource) rs.createResource(URI
-				.createPlatformResourceURI("DemoProject", true));
+				.createPlatformResourceURI("DemoProject", true)); //$NON-NLS-1$
 		try {
 			this.pr.load(new HashMap<>());
 		} catch (final IOException e) {
@@ -114,7 +118,7 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 		this.eventBUpdateFeatureFactory = new EventBFeatureFactory<>();
 
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
-		final IExtensionPoint extensionPoint = registry.getExtensionPoint("ac.soton.eventb.diagrameditor.featureprovider");
+		final IExtensionPoint extensionPoint = registry.getExtensionPoint("ac.soton.eventb.diagrameditor.featureprovider"); //$NON-NLS-1$
 
 		final IEventBFeature[] providedFeatures = { new EventBElementFeature(),
 				new EventBRelationFeature(), new EventBProjectFeature() };
@@ -126,7 +130,7 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 
 		for(final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
 			try {
-				features.add((IEventBFeature)element.createExecutableExtension("feature"));
+				features.add((IEventBFeature)element.createExecutableExtension("feature")); //$NON-NLS-1$
 			} catch (final CoreException e) {
 				e.printStackTrace();
 			}
@@ -157,8 +161,6 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 						.getCreateRelationshipFeatures(this));
 			}
 		}
-
-		Logger.getAnonymousLogger().severe(String.format("%d Features and %d Relations", this.createFeatures.size(), this.createRelationshipFeatures.size()));
 
 		this.setIndependenceSolver(new EventBIndependenceSolver());
 	}
@@ -208,8 +210,8 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 			this.getProjectResource().save(
 					new HashMap<IRodinElement, EventBObject>());
 		} catch (final IOException e1) {
-			Logger.getLogger("diagram-editor").log(Level.SEVERE,
-					"Couldn't Save", e1);
+			Logger.getLogger("diagram-editor").log(Level.SEVERE, //$NON-NLS-1$
+					"Couldn't Save", e1); //$NON-NLS-1$
 		}
 
 	}

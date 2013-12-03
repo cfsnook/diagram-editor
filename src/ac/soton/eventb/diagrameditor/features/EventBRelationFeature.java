@@ -39,7 +39,7 @@ import ac.soton.eventb.diagrameditor.relations.MachineSeesRelation;
 class CreateExtendsRelationshipFeature extends AbstractCreateConnectionFeature {
 
 	public CreateExtendsRelationshipFeature(IFeatureProvider fp) {
-		super(fp, "Extends", "Create an Event-B Extends Relationship");
+		super(fp, "Extends", "Create an Event-B Extends Relationship"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Override
@@ -88,7 +88,7 @@ class CreateExtendsRelationshipFeature extends AbstractCreateConnectionFeature {
 class CreateRefinesRelationshipFeature extends AbstractCreateConnectionFeature {
 
 	public CreateRefinesRelationshipFeature(IFeatureProvider fp) {
-		super(fp, "Refines", "Create an Event-B Refines Relationship");
+		super(fp, "Refines", "Create an Event-B Refines Relationship"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Override
@@ -137,7 +137,7 @@ class CreateRefinesRelationshipFeature extends AbstractCreateConnectionFeature {
 class CreateSeesRelationshipFeature extends AbstractCreateConnectionFeature {
 
 	public CreateSeesRelationshipFeature(IFeatureProvider fp) {
-		super(fp, "Sees", "Create an Event-B Sees Relationship");
+		super(fp, "Sees", "Create an Event-B Sees Relationship"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Override
@@ -302,7 +302,7 @@ class EventBRelationshipAddFeature extends AbstractAddFeature {
 
 		final IGaService gaService = Graphiti.getGaService();
 		final Polyline polyline = gaService.createPolyline(connection);
-		polyline.setLineWidth(2);
+		polyline.setLineWidth(new Integer(2));
 		polyline.setForeground(this.manageColor(IColorConstant.BLACK));
 
 		// create link and wire it
@@ -323,7 +323,7 @@ class EventBRelationshipAddFeature extends AbstractAddFeature {
 }
 
 class EventBRelationshipDeleteFeature extends
-		org.eclipse.graphiti.ui.features.DefaultDeleteFeature {
+org.eclipse.graphiti.ui.features.DefaultDeleteFeature {
 
 	public EventBRelationshipDeleteFeature(IFeatureProvider fp) {
 		super(fp);

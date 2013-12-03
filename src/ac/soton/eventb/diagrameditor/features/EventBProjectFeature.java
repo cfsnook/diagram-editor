@@ -1,7 +1,6 @@
 package ac.soton.eventb.diagrameditor.features;
 
 import java.util.Collection;
-import java.util.logging.Logger;
 
 import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.ICreateConnectionFeature;
@@ -131,7 +130,6 @@ class EventBProjectUpdateFeature extends AbstractUpdateFeature {
 
 	@Override
 	public boolean update(IUpdateContext context) {
-		Logger.getAnonymousLogger().severe("Logging.");
 		boolean updated = false;
 		Project project = (Project) this
 				.getBusinessObjectForPictogramElement(context
@@ -172,7 +170,7 @@ class EventBProjectUpdateFeature extends AbstractUpdateFeature {
 
 								final AddConnectionContext acc = new AddConnectionContext(
 										a1.getAnchors().get(0), a2.getAnchors()
-												.get(0));
+										.get(0));
 								acc.setNewObject(new MachineSeesRelation(m, ctx));
 								this.getFeatureProvider().addIfPossible(acc);
 							}
@@ -189,7 +187,7 @@ class EventBProjectUpdateFeature extends AbstractUpdateFeature {
 
 								final AddConnectionContext acc = new AddConnectionContext(
 										a1.getAnchors().get(0), a2.getAnchors()
-												.get(0));
+										.get(0));
 								acc.setNewObject(new MachineRefinesRelation(m,
 										mac));
 								this.getFeatureProvider().addIfPossible(acc);
@@ -210,7 +208,7 @@ class EventBProjectUpdateFeature extends AbstractUpdateFeature {
 
 								final AddConnectionContext acc = new AddConnectionContext(
 										a1.getAnchors().get(0), a2.getAnchors()
-												.get(0));
+										.get(0));
 								acc.setNewObject(new ContextExtendsRelation(
 										ctx1, ctx2));
 								this.getFeatureProvider().addIfPossible(acc);
