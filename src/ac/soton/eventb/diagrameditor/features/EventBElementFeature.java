@@ -35,8 +35,6 @@ import org.eventb.emf.core.EventBNamed;
 import org.eventb.emf.core.EventBNamedCommentedElement;
 
 import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
-import ac.soton.eventb.diagrameditor.IEventBFeature;
-import ac.soton.eventb.diagrameditor.Matcher;
 
 public class EventBElementFeature implements IEventBFeature {
 

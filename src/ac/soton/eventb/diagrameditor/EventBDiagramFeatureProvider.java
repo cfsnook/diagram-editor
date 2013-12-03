@@ -30,7 +30,10 @@ import org.eventb.emf.persistence.factory.ProjectFactory;
 import org.rodinp.core.IRodinElement;
 
 import ac.soton.eventb.diagrameditor.features.EventBElementFeature;
+import ac.soton.eventb.diagrameditor.features.EventBFeatureFactory;
+import ac.soton.eventb.diagrameditor.features.EventBProjectFeature;
 import ac.soton.eventb.diagrameditor.features.EventBRelationFeature;
+import ac.soton.eventb.diagrameditor.features.IEventBFeature;
 import ac.soton.eventb.diagrameditor.features.create.CreateEventBContextFeature;
 import ac.soton.eventb.diagrameditor.features.create.CreateEventBMachineFeature;
 import ac.soton.eventb.diagrameditor.features.create.CreateExtendsRelationshipFeature;

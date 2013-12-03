@@ -1,4 +1,4 @@
-package ac.soton.eventb.diagrameditor;
+package ac.soton.eventb.diagrameditor.features;
 
 import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.IDeleteFeature;

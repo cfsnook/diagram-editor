@@ -20,8 +20,6 @@ import org.eclipse.graphiti.services.IPeCreateService;
 import org.eclipse.graphiti.util.IColorConstant;
 
 import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
-import ac.soton.eventb.diagrameditor.IEventBFeature;
-import ac.soton.eventb.diagrameditor.Matcher;
 import ac.soton.eventb.diagrameditor.relations.EventBRelation;
 
 public class EventBRelationFeature implements IEventBFeature {

@@ -1,4 +1,4 @@
-package ac.soton.eventb.diagrameditor;
+package ac.soton.eventb.diagrameditor.features;
 
 import java.util.logging.Logger;
 
@@ -27,6 +27,7 @@ import org.eventb.emf.core.context.Context;
 import org.eventb.emf.core.machine.Machine;
 import org.eventb.emf.persistence.ProjectResource;
 
+import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
 import ac.soton.eventb.diagrameditor.relations.ContextExtendsRelation;
 import ac.soton.eventb.diagrameditor.relations.MachineRefinesRelation;
 import ac.soton.eventb.diagrameditor.relations.MachineSeesRelation;

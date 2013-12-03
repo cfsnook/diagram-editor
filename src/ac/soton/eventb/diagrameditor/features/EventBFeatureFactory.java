@@ -1,10 +1,12 @@
-package ac.soton.eventb.diagrameditor;
+package ac.soton.eventb.diagrameditor.features;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.graphiti.features.IFeature;
 import org.eclipse.graphiti.features.context.IContext;
+
+import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
 
 public class EventBFeatureFactory<C extends IContext, F extends IFeature> {
 
