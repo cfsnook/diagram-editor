@@ -12,19 +12,20 @@ public class EventBFeatureFactory<C extends IContext, F extends IFeature> {
 
 	public EventBFeatureFactory() {
 		super();
-		this.featureList = new ArrayList<Matcher<C,F>>();
+		this.featureList = new ArrayList<Matcher<C, F>>();
 	}
 
 	public F getFeature(C context, EventBDiagramFeatureProvider f) {
-		for(Matcher<C, F> m : featureList) {
-			if(m.match(context, f)) {
+		for (final Matcher<C, F> m : this.featureList) {
+			if (m.match(context, f)) {
 				return m.getFeature(context, f);
 			}
 		}
-		throw new UnsupportedOperationException("Factory couldn't instantiate from " + context.toString());
+		throw new UnsupportedOperationException(
+				"Factory couldn't instantiate from " + context.toString());
 	}
 
-	public void register(Matcher<C,F> matcher) {
+	public void register(Matcher<C, F> matcher) {
 		this.featureList.add(matcher);
 	}
 

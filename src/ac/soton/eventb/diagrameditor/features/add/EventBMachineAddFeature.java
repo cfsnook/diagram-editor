@@ -12,10 +12,9 @@ public class EventBMachineAddFeature extends EventBComponentAddFeature {
 
 	@Override
 	public PictogramElement add(IAddContext context) {
-		PictogramElement toAdd = super.add(context);
+		final PictogramElement toAdd = super.add(context);
 		return toAdd;
-		
+
 	}
-	
 
 }

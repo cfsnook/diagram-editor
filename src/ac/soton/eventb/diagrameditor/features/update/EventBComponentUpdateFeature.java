@@ -23,31 +23,39 @@ public class EventBComponentUpdateFeature extends AbstractUpdateFeature {
 	}
 
 	@Override
-	public IReason updateNeeded(IUpdateContext context) {
-		if(context.getPictogramElement() instanceof ContainerShape) {
-			for(Shape s : ((ContainerShape)context.getPictogramElement()).getChildren()) {
-
-				if(s.getGraphicsAlgorithm() instanceof Text) {
-					String name = ((EventBNamed)getBusinessObjectForPictogramElement(context.getPictogramElement())).doGetName();
-					return ((AbstractText) s.getGraphicsAlgorithm()).getValue().equals(name) ? Reason.createFalseReason() : Reason.createTrueReason(); 
-				}
-			}
-		}
-		return Reason.createFalseReason();
-	}
-
-	@Override
 	public boolean update(IUpdateContext context) {
-		if(context.getPictogramElement() instanceof ContainerShape) {
-			for(Shape s : ((ContainerShape)context.getPictogramElement()).getChildren()) {
-				if(s.getGraphicsAlgorithm() instanceof Text) {
-					String name = ((EventBNamed)getBusinessObjectForPictogramElement(context.getPictogramElement())).doGetName();
-					((AbstractText)s.getGraphicsAlgorithm()).setValue(name);
+		if (context.getPictogramElement() instanceof ContainerShape) {
+			for (final Shape s : ((ContainerShape) context
+					.getPictogramElement()).getChildren()) {
+				if (s.getGraphicsAlgorithm() instanceof Text) {
+					final String name = ((EventBNamed) this
+							.getBusinessObjectForPictogramElement(context
+									.getPictogramElement())).doGetName();
+					((AbstractText) s.getGraphicsAlgorithm()).setValue(name);
 					return true;
 				}
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public IReason updateNeeded(IUpdateContext context) {
+		if (context.getPictogramElement() instanceof ContainerShape) {
+			for (final Shape s : ((ContainerShape) context
+					.getPictogramElement()).getChildren()) {
+
+				if (s.getGraphicsAlgorithm() instanceof Text) {
+					final String name = ((EventBNamed) this
+							.getBusinessObjectForPictogramElement(context
+									.getPictogramElement())).doGetName();
+					return ((AbstractText) s.getGraphicsAlgorithm()).getValue()
+							.equals(name) ? Reason.createFalseReason() : Reason
+							.createTrueReason();
+				}
+			}
+		}
+		return Reason.createFalseReason();
 	}
 
 }

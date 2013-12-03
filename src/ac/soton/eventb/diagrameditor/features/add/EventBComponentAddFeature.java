@@ -19,20 +19,73 @@ import org.eventb.emf.core.EventBNamedCommentedElement;
 
 public class EventBComponentAddFeature extends AbstractAddShapeFeature {
 
-	private static final IColorConstant CLASS_FOREGROUND = new ColorConstant(100, 50, 50);
-	private static final IColorConstant CLASS_BACKGROUND = new ColorConstant(255, 255, 255);
+	private static final IColorConstant CLASS_BACKGROUND = new ColorConstant(
+			255, 255, 255);
+	private static final IColorConstant CLASS_FOREGROUND = new ColorConstant(
+			100, 50, 50);
 
 	public EventBComponentAddFeature(IFeatureProvider fp) {
 		super(fp);
-		
+
+	}
+
+	@Override
+	public PictogramElement add(IAddContext context) {
+		final EventBNamedCommentedElement element = (EventBNamedCommentedElement) context
+				.getNewObject();
+		final Diagram targetDiagram = (Diagram) context.getTargetContainer();
+
+		final IPeCreateService peCreateService = Graphiti.getPeCreateService();
+		final ContainerShape containerShape = peCreateService
+				.createContainerShape(targetDiagram, true);
+
+		final int width = 150;
+		final int height = 100;
+
+		final IGaService gaService = Graphiti.getGaService();
+
+		{
+			final RoundedRectangle rr = gaService.createRoundedRectangle(
+					containerShape, 5, 5);
+			rr.setForeground(this.manageColor(CLASS_FOREGROUND));
+			rr.setBackground(this.manageColor(CLASS_BACKGROUND));
+			rr.setLineWidth(2);
+			gaService.setLocationAndSize(rr, context.getX(), context.getY(),
+					width, height);
+			this.link(containerShape, element);
+		}
+		{
+			// create shape for text
+			final Shape shape = peCreateService.createShape(containerShape,
+					false);
+
+			// create and set text graphics algorithm
+			final Text text = gaService.createText(shape, element.getName());
+			text.setForeground(this.manageColor(CLASS_FOREGROUND));
+			text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+			// vertical alignment has as default value "center"
+			text.setFont(gaService.manageFont(this.getDiagram(), "Arial", 10,
+					false, false));
+			gaService.setLocationAndSize(text, 0, 0, width, 20);
+
+			// create link and wire it
+			this.link(shape, element);
+		}
+
+		peCreateService.createChopboxAnchor(containerShape);
+		this.layoutPictogramElement(containerShape);
+
+		return containerShape;
 	}
 
 	@Override
 	public boolean canAdd(IAddContext context) {
-		if(context.getNewObject() instanceof EventBNamedCommentedElement) {
-			if(context.getTargetContainer() instanceof Diagram) {
-				for(PictogramElement pe : getDiagram().getChildren()) {
-					if(getBusinessObjectForPictogramElement(pe).equals(context.getNewObject())) {
+		if (context.getNewObject() instanceof EventBNamedCommentedElement) {
+			if (context.getTargetContainer() instanceof Diagram) {
+				for (final PictogramElement pe : this.getDiagram()
+						.getChildren()) {
+					if (this.getBusinessObjectForPictogramElement(pe).equals(
+							context.getNewObject())) {
 						return false;
 					}
 				}
@@ -40,49 +93,6 @@ public class EventBComponentAddFeature extends AbstractAddShapeFeature {
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public PictogramElement add(IAddContext context) {
-		EventBNamedCommentedElement element = (EventBNamedCommentedElement)context.getNewObject();
-		Diagram targetDiagram = (Diagram) context.getTargetContainer();
-
-		IPeCreateService peCreateService = Graphiti.getPeCreateService();
-		ContainerShape containerShape = peCreateService.createContainerShape(targetDiagram, true);
-
-		int width = 150;
-		int height = 100;
-
-		IGaService gaService = Graphiti.getGaService();
-
-		{
-			RoundedRectangle rr = gaService.createRoundedRectangle(containerShape, 5, 5);
-			rr.setForeground(manageColor(CLASS_FOREGROUND));
-			rr.setBackground(manageColor(CLASS_BACKGROUND));
-			rr.setLineWidth(2);
-			gaService.setLocationAndSize(rr, context.getX(), context.getY(), width, height);
-			link(containerShape, element);
-		}
-		{
-            // create shape for text
-            Shape shape = peCreateService.createShape(containerShape, false);
- 
-            // create and set text graphics algorithm
-            Text text = gaService.createText(shape, element.getName());
-            text.setForeground(manageColor(CLASS_FOREGROUND));
-            text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER ); 
-            // vertical alignment has as default value "center"
-            text.setFont(gaService.manageFont(getDiagram(), "Arial", 10, false, false));
-            gaService.setLocationAndSize(text, 0, 0, width, 20);
- 
-            // create link and wire it
-            link(shape, element);
-        }
-		
-		peCreateService.createChopboxAnchor(containerShape);
-		layoutPictogramElement(containerShape);
-		
-		return containerShape;
 	}
 
 }

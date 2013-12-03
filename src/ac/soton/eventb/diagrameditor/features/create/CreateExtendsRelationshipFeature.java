@@ -19,31 +19,43 @@ public class CreateExtendsRelationshipFeature extends
 
 	@Override
 	public boolean canCreate(ICreateConnectionContext context) {
-		EObject source = (EObject) getBusinessObjectForPictogramElement(context.getSourcePictogramElement());
-		EObject target = (EObject) getBusinessObjectForPictogramElement(context.getTargetPictogramElement());
-		
+		final EObject source = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getSourcePictogramElement());
+		final EObject target = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getTargetPictogramElement());
+
 		return source instanceof Context && target instanceof Context;
 	}
 
 	@Override
-	public Connection create(ICreateConnectionContext context) {
-		EObject source = (EObject) getBusinessObjectForPictogramElement(context.getSourcePictogramElement());
-		EObject target = (EObject) getBusinessObjectForPictogramElement(context.getTargetPictogramElement());
-		
-		if(source instanceof Context && target instanceof Context) {
-			ContextExtendsRelation msr = new ContextExtendsRelation((Context)source, (Context)target);
-			AddConnectionContext acc = new AddConnectionContext(context.getSourceAnchor(), context.getTargetAnchor());
-			acc.setNewObject(msr);
-			return (Connection)getFeatureProvider().addIfPossible(acc);
-		}
-		return null;
+	public boolean canStartConnection(ICreateConnectionContext context) {
+		final EObject source = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getSourcePictogramElement());
+
+		return source instanceof Context;
 	}
 
 	@Override
-	public boolean canStartConnection(ICreateConnectionContext context) {
-		EObject source = (EObject) getBusinessObjectForPictogramElement(context.getSourcePictogramElement());
-		
-		return source instanceof Context;
+	public Connection create(ICreateConnectionContext context) {
+		final EObject source = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getSourcePictogramElement());
+		final EObject target = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getTargetPictogramElement());
+
+		if (source instanceof Context && target instanceof Context) {
+			final ContextExtendsRelation msr = new ContextExtendsRelation(
+					(Context) source, (Context) target);
+			final AddConnectionContext acc = new AddConnectionContext(
+					context.getSourceAnchor(), context.getTargetAnchor());
+			acc.setNewObject(msr);
+			return (Connection) this.getFeatureProvider().addIfPossible(acc);
+		}
+		return null;
 	}
 
 }

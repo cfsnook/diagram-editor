@@ -13,25 +13,6 @@ import ac.soton.eventb.diagrameditor.relations.EventBRelation;
 
 public class EventBRelationFeature implements IEventBFeature {
 	@Override
-	public Matcher<IAddContext, IAddFeature> getAddMatcher() {
-		return new Matcher<IAddContext, IAddFeature>() {
-
-			@Override
-			public boolean match(IAddContext o, EventBDiagramFeatureProvider e) {
-				return o.getNewObject() instanceof EventBRelation;
-			}
-
-			@Override
-			public IAddFeature getFeature(IAddContext o, EventBDiagramFeatureProvider e) {
-				if(this.match(o, e)) {
-					return new EventBRelationshipAddFeature(e);
-				}
-				return null;
-			}
-		};
-	}
-
-	@Override
 	public boolean canAdd() {
 		return true;
 	}
@@ -42,20 +23,42 @@ public class EventBRelationFeature implements IEventBFeature {
 	}
 
 	@Override
+	public Matcher<IAddContext, IAddFeature> getAddMatcher() {
+		return new Matcher<IAddContext, IAddFeature>() {
+
+			@Override
+			public IAddFeature getFeature(IAddContext o,
+					EventBDiagramFeatureProvider e) {
+				if (this.match(o, e)) {
+					return new EventBRelationshipAddFeature(e);
+				}
+				return null;
+			}
+
+			@Override
+			public boolean match(IAddContext o, EventBDiagramFeatureProvider e) {
+				return o.getNewObject() instanceof EventBRelation;
+			}
+		};
+	}
+
+	@Override
 	public Matcher<IDeleteContext, IDeleteFeature> getDeleteMatcher() {
 		return new Matcher<IDeleteContext, IDeleteFeature>() {
 			@Override
-			public boolean match(IDeleteContext o, EventBDiagramFeatureProvider e) {
-				return e.getBusinessObjectForPictogramElement(o.getPictogramElement()) instanceof EventBRelation;
-			}
-			
-			@Override
 			public IDeleteFeature getFeature(IDeleteContext o,
 					EventBDiagramFeatureProvider e) {
-				if(this.match(o, e)) {
+				if (this.match(o, e)) {
 					return new EventBRelationshipDeleteFeature(e);
 				}
 				return null;
+			}
+
+			@Override
+			public boolean match(IDeleteContext o,
+					EventBDiagramFeatureProvider e) {
+				return e.getBusinessObjectForPictogramElement(o
+						.getPictogramElement()) instanceof EventBRelation;
 			}
 		};
 	}

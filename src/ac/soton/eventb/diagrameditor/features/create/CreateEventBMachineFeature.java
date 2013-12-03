@@ -15,23 +15,22 @@ public class CreateEventBMachineFeature extends AbstractCreateFeature {
 
 	}
 
-	
 	@Override
 	public boolean canCreate(ICreateContext context) {
-		boolean validContainer = context.getTargetContainer() instanceof Diagram;
+		final boolean validContainer = context.getTargetContainer() instanceof Diagram;
 		return validContainer;
 	}
 
 	@Override
 	public Object[] create(ICreateContext context) {
-		 Machine m = MachineFactory.eINSTANCE.createMachine();
-		 ((EventBDiagramFeatureProvider)this.getFeatureProvider()).getProject().getComponents().add(m);
-		 addGraphicalRepresentation(context, m);
-		 getFeatureProvider().getDirectEditingInfo().setActive(true);
-		 
-		 //((EventBDiagramFeatureProvider)this.getFeatureProvider()).save();
-		 return new Object[] { m };
+		final Machine m = MachineFactory.eINSTANCE.createMachine();
+		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
+				.getComponents().add(m);
+		this.addGraphicalRepresentation(context, m);
+		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
+
+		// ((EventBDiagramFeatureProvider)this.getFeatureProvider()).save();
+		return new Object[] { m };
 	}
-	
 
 }

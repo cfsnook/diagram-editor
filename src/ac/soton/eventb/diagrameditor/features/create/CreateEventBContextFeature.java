@@ -15,23 +15,22 @@ public class CreateEventBContextFeature extends AbstractCreateFeature {
 
 	}
 
-	
 	@Override
 	public boolean canCreate(ICreateContext context) {
-		boolean validContainer = context.getTargetContainer() instanceof Diagram;
+		final boolean validContainer = context.getTargetContainer() instanceof Diagram;
 		return validContainer;
 	}
 
 	@Override
 	public Object[] create(ICreateContext context) {
-		 Context c = ContextFactory.eINSTANCE.createContext();
-		 ((EventBDiagramFeatureProvider)this.getFeatureProvider()).getProject().getComponents().add(c);
-		 addGraphicalRepresentation(context, c);
-		 getFeatureProvider().getDirectEditingInfo().setActive(true);
-		 
-		 //((EventBDiagramFeatureProvider)this.getFeatureProvider()).save();
-		 return new Object[] { c };
+		final Context c = ContextFactory.eINSTANCE.createContext();
+		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
+				.getComponents().add(c);
+		this.addGraphicalRepresentation(context, c);
+		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
+
+		// ((EventBDiagramFeatureProvider)this.getFeatureProvider()).save();
+		return new Object[] { c };
 	}
-	
 
 }

@@ -20,31 +20,43 @@ public class CreateSeesRelationshipFeature extends
 
 	@Override
 	public boolean canCreate(ICreateConnectionContext context) {
-		EObject source = (EObject) getBusinessObjectForPictogramElement(context.getSourcePictogramElement());
-		EObject target = (EObject) getBusinessObjectForPictogramElement(context.getTargetPictogramElement());
-		
+		final EObject source = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getSourcePictogramElement());
+		final EObject target = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getTargetPictogramElement());
+
 		return source instanceof Machine && target instanceof Context;
 	}
 
 	@Override
-	public Connection create(ICreateConnectionContext context) {
-		EObject source = (EObject) getBusinessObjectForPictogramElement(context.getSourcePictogramElement());
-		EObject target = (EObject) getBusinessObjectForPictogramElement(context.getTargetPictogramElement());
-		
-		if(source instanceof Machine && target instanceof Context) {
-			MachineSeesRelation msr = new MachineSeesRelation((Machine)source, (Context)target);
-			AddConnectionContext acc = new AddConnectionContext(context.getSourceAnchor(), context.getTargetAnchor());
-			acc.setNewObject(msr);
-			return (Connection)getFeatureProvider().addIfPossible(acc);
-		}
-		return null;
+	public boolean canStartConnection(ICreateConnectionContext context) {
+		final EObject source = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getSourcePictogramElement());
+
+		return source instanceof Machine;
 	}
 
 	@Override
-	public boolean canStartConnection(ICreateConnectionContext context) {
-		EObject source = (EObject) getBusinessObjectForPictogramElement(context.getSourcePictogramElement());
-		
-		return source instanceof Machine;
+	public Connection create(ICreateConnectionContext context) {
+		final EObject source = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getSourcePictogramElement());
+		final EObject target = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getTargetPictogramElement());
+
+		if (source instanceof Machine && target instanceof Context) {
+			final MachineSeesRelation msr = new MachineSeesRelation(
+					(Machine) source, (Context) target);
+			final AddConnectionContext acc = new AddConnectionContext(
+					context.getSourceAnchor(), context.getTargetAnchor());
+			acc.setNewObject(msr);
+			return (Connection) this.getFeatureProvider().addIfPossible(acc);
+		}
+		return null;
 	}
 
 }

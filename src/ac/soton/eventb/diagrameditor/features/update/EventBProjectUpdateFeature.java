@@ -36,80 +36,89 @@ public class EventBProjectUpdateFeature extends AbstractUpdateFeature {
 	}
 
 	@Override
-	public IReason updateNeeded(IUpdateContext context) {
-		return Reason.createFalseReason();
-	}
-
-	@Override
 	public boolean update(IUpdateContext context) {
 		boolean updated = false;
-		Project project = (Project) getBusinessObjectForPictogramElement(context.getPictogramElement());
-		
-		if(project == null) {
-			ProjectResource pr = ((EventBDiagramFeatureProvider)this.getFeatureProvider()).getProjectResource();
+		Project project = (Project) this
+				.getBusinessObjectForPictogramElement(context
+						.getPictogramElement());
+
+		if (project == null) {
+			final ProjectResource pr = ((EventBDiagramFeatureProvider) this
+					.getFeatureProvider()).getProjectResource();
 			project = (Project) pr.getContents().get(0);
-			link(context.getPictogramElement(), project);
+			this.link(context.getPictogramElement(), project);
 			updated = true;
 		}
 
-		for(EventBNamedCommentedElement e : project.getComponents()) {
-			AddContext ac = new AddContext();
-			ac.setTargetContainer(getDiagram());
+		for (final EventBNamedCommentedElement e : project.getComponents()) {
+			final AddContext ac = new AddContext();
+			ac.setTargetContainer(this.getDiagram());
 			ac.setNewObject(e);
-			getFeatureProvider().addIfPossible(ac);
+			this.getFeatureProvider().addIfPossible(ac);
 		}
-		
-		getDiagram().getConnections().clear();
-		
-		for(Shape s : getDiagram().getChildren()) {
-			if(s instanceof ContainerShape) {
-				ContainerShape c = (ContainerShape)s;
-				EventBNamedCommentedElement element = (EventBNamedCommentedElement) getBusinessObjectForPictogramElement(c);
-				if(element instanceof Machine) {
-					Machine m = (Machine)element;
-					for(Context ctx : m.getSees()) {
-						for(Shape innerShape : getDiagram().getChildren()) {
-							if(getBusinessObjectForPictogramElement(innerShape) == ctx) {								
-								AnchorContainer a1 = (AnchorContainer)s;
-								AnchorContainer a2 = (AnchorContainer)innerShape;
+
+		this.getDiagram().getConnections().clear();
+
+		for (final Shape s : this.getDiagram().getChildren()) {
+			if (s instanceof ContainerShape) {
+				final ContainerShape c = (ContainerShape) s;
+				final EventBNamedCommentedElement element = (EventBNamedCommentedElement) this
+						.getBusinessObjectForPictogramElement(c);
+				if (element instanceof Machine) {
+					final Machine m = (Machine) element;
+					for (final Context ctx : m.getSees()) {
+						for (final Shape innerShape : this.getDiagram()
+								.getChildren()) {
+							if (this.getBusinessObjectForPictogramElement(innerShape) == ctx) {
+								final AnchorContainer a1 = s;
+								final AnchorContainer a2 = innerShape;
 								Graphiti.getPeService().createChopboxAnchor(a1);
 								Graphiti.getPeService().createChopboxAnchor(a2);
-																
-								AddConnectionContext acc = new AddConnectionContext(a1.getAnchors().get(0), a2.getAnchors().get(0));
+
+								final AddConnectionContext acc = new AddConnectionContext(
+										a1.getAnchors().get(0), a2.getAnchors()
+												.get(0));
 								acc.setNewObject(new MachineSeesRelation(m, ctx));
-								getFeatureProvider().addIfPossible(acc);
+								this.getFeatureProvider().addIfPossible(acc);
 							}
 						}
 					}
-					for(Machine mac : m.getRefines()) {
-						for(Shape innerShape : getDiagram().getChildren()) {
-							if(getBusinessObjectForPictogramElement(innerShape) == mac) {								
-								AnchorContainer a1 = (AnchorContainer)s;
-								AnchorContainer a2 = (AnchorContainer)innerShape;
+					for (final Machine mac : m.getRefines()) {
+						for (final Shape innerShape : this.getDiagram()
+								.getChildren()) {
+							if (this.getBusinessObjectForPictogramElement(innerShape) == mac) {
+								final AnchorContainer a1 = s;
+								final AnchorContainer a2 = innerShape;
 								Graphiti.getPeService().createChopboxAnchor(a1);
 								Graphiti.getPeService().createChopboxAnchor(a2);
-																
-								AddConnectionContext acc = new AddConnectionContext(a1.getAnchors().get(0), a2.getAnchors().get(0));
-								acc.setNewObject(new MachineRefinesRelation(m, mac));
-								getFeatureProvider().addIfPossible(acc);
+
+								final AddConnectionContext acc = new AddConnectionContext(
+										a1.getAnchors().get(0), a2.getAnchors()
+												.get(0));
+								acc.setNewObject(new MachineRefinesRelation(m,
+										mac));
+								this.getFeatureProvider().addIfPossible(acc);
 							}
 						}
 					}
-				}
-				else if(element instanceof Context) {
-					Context ctx1 = (Context)element;
-					for(Context ctx2 : ctx1.getExtends()) {
-						for(Shape innerShape : getDiagram().getChildren()) {
-							if(getBusinessObjectForPictogramElement(innerShape) == ctx2) {
-								
-								AnchorContainer a1 = (AnchorContainer)s;
-								AnchorContainer a2 = (AnchorContainer)innerShape;
+				} else if (element instanceof Context) {
+					final Context ctx1 = (Context) element;
+					for (final Context ctx2 : ctx1.getExtends()) {
+						for (final Shape innerShape : this.getDiagram()
+								.getChildren()) {
+							if (this.getBusinessObjectForPictogramElement(innerShape) == ctx2) {
+
+								final AnchorContainer a1 = s;
+								final AnchorContainer a2 = innerShape;
 								Graphiti.getPeService().createChopboxAnchor(a1);
 								Graphiti.getPeService().createChopboxAnchor(a2);
-																
-								AddConnectionContext acc = new AddConnectionContext(a1.getAnchors().get(0), a2.getAnchors().get(0));
-								acc.setNewObject(new ContextExtendsRelation(ctx1, ctx2));
-								getFeatureProvider().addIfPossible(acc);
+
+								final AddConnectionContext acc = new AddConnectionContext(
+										a1.getAnchors().get(0), a2.getAnchors()
+												.get(0));
+								acc.setNewObject(new ContextExtendsRelation(
+										ctx1, ctx2));
+								this.getFeatureProvider().addIfPossible(acc);
 							}
 						}
 					}
@@ -118,6 +127,11 @@ public class EventBProjectUpdateFeature extends AbstractUpdateFeature {
 		}
 
 		return updated;
+	}
+
+	@Override
+	public IReason updateNeeded(IUpdateContext context) {
+		return Reason.createFalseReason();
 	}
 
 }

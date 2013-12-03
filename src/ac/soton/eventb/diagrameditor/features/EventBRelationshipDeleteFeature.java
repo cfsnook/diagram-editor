@@ -4,7 +4,8 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 
 import ac.soton.eventb.diagrameditor.relations.EventBRelation;
 
-public class EventBRelationshipDeleteFeature extends org.eclipse.graphiti.ui.features.DefaultDeleteFeature {
+public class EventBRelationshipDeleteFeature extends
+		org.eclipse.graphiti.ui.features.DefaultDeleteFeature {
 
 	public EventBRelationshipDeleteFeature(IFeatureProvider fp) {
 		super(fp);
@@ -12,9 +13,8 @@ public class EventBRelationshipDeleteFeature extends org.eclipse.graphiti.ui.fea
 
 	@Override
 	protected void deleteBusinessObject(Object bo) {
-		EventBRelation r = (EventBRelation)bo;
+		final EventBRelation r = (EventBRelation) bo;
 		r.delete();
 	}
-	
 
 }

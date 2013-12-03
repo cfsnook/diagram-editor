@@ -20,6 +20,27 @@ public class EventBRelationshipAddFeature extends AbstractAddFeature {
 		super(fp);
 	}
 
+	@Override
+	public PictogramElement add(IAddContext context) {
+		final IAddConnectionContext addConContext = (IAddConnectionContext) context;
+		final IPeCreateService peCreateService = Graphiti.getPeCreateService();
+
+		// CONNECTION WITH POLYLINE
+		final Connection connection = peCreateService
+				.createFreeFormConnection(this.getDiagram());
+		connection.setStart(addConContext.getSourceAnchor());
+		connection.setEnd(addConContext.getTargetAnchor());
+
+		final IGaService gaService = Graphiti.getGaService();
+		final Polyline polyline = gaService.createPolyline(connection);
+		polyline.setLineWidth(2);
+		polyline.setForeground(this.manageColor(IColorConstant.BLACK));
+
+		// create link and wire it
+		this.link(connection, context.getNewObject());
+
+		return connection;
+	}
 
 	@Override
 	public boolean canAdd(IAddContext context) {
@@ -28,28 +49,6 @@ public class EventBRelationshipAddFeature extends AbstractAddFeature {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public PictogramElement add(IAddContext context) {
-		IAddConnectionContext addConContext = (IAddConnectionContext) context;
-		IPeCreateService peCreateService = Graphiti.getPeCreateService();
-
-		// CONNECTION WITH POLYLINE
-		Connection connection = peCreateService
-				.createFreeFormConnection(getDiagram());
-		connection.setStart(addConContext.getSourceAnchor());
-		connection.setEnd(addConContext.getTargetAnchor());
-
-		IGaService gaService = Graphiti.getGaService();
-		Polyline polyline = gaService.createPolyline(connection);
-		polyline.setLineWidth(2);
-		polyline.setForeground(manageColor(IColorConstant.BLACK));
-
-		// create link and wire it
-		link(connection, context.getNewObject());
-		
-		return connection;		
 	}
 
 }

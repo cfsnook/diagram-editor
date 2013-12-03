@@ -29,40 +29,43 @@ public class EventBElementFeature implements IEventBFeature {
 	}
 
 	@Override
-	public Matcher<IDeleteContext, IDeleteFeature> getDeleteMatcher() {
-		return new Matcher<IDeleteContext, IDeleteFeature>() {
-			
+	public Matcher<IAddContext, IAddFeature> getAddMatcher() {
+		return new Matcher<IAddContext, IAddFeature>() {
+
 			@Override
-			public boolean match(IDeleteContext o, EventBDiagramFeatureProvider e) {
-				return e.getBusinessObjectForPictogramElement(o.getPictogramElement()) instanceof EventBElement;
-			}
-			
-			@Override
-			public IDeleteFeature getFeature(IDeleteContext o,
+			public IAddFeature getFeature(IAddContext o,
 					EventBDiagramFeatureProvider e) {
-				if(this.match(o, e)) {
-					return new EventBComponentDeleteFeature(e);
+				if (this.match(o, e)) {
+					return new EventBComponentAddFeature(e);
 				}
 				return null;
+			}
+
+			@Override
+			public boolean match(IAddContext o, EventBDiagramFeatureProvider e) {
+				return o.getNewObject() instanceof EventBNamed;
 			}
 		};
 	}
 
 	@Override
-	public Matcher<IAddContext, IAddFeature> getAddMatcher() {
-		return new Matcher<IAddContext, IAddFeature>() {
-	
+	public Matcher<IDeleteContext, IDeleteFeature> getDeleteMatcher() {
+		return new Matcher<IDeleteContext, IDeleteFeature>() {
+
 			@Override
-			public boolean match(IAddContext o, EventBDiagramFeatureProvider e) {
-				return o.getNewObject() instanceof EventBNamed;
-			}
-	
-			@Override
-			public IAddFeature getFeature(IAddContext o, EventBDiagramFeatureProvider e) {
-				if(this.match(o, e)) {
-					return new EventBComponentAddFeature(e);
+			public IDeleteFeature getFeature(IDeleteContext o,
+					EventBDiagramFeatureProvider e) {
+				if (this.match(o, e)) {
+					return new EventBComponentDeleteFeature(e);
 				}
 				return null;
+			}
+
+			@Override
+			public boolean match(IDeleteContext o,
+					EventBDiagramFeatureProvider e) {
+				return e.getBusinessObjectForPictogramElement(o
+						.getPictogramElement()) instanceof EventBElement;
 			}
 		};
 	}

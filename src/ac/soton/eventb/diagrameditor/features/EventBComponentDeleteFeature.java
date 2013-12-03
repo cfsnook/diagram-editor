@@ -11,10 +11,12 @@ public class EventBComponentDeleteFeature extends DefaultDeleteFeature {
 	public EventBComponentDeleteFeature(IFeatureProvider fp) {
 		super(fp);
 	}
-	
+
 	@Override
 	public void delete(IDeleteContext context) {
-		EventBNamedCommentedElement e = (EventBNamedCommentedElement) getBusinessObjectForPictogramElement(context.getPictogramElement());
+		final EventBNamedCommentedElement e = (EventBNamedCommentedElement) this
+				.getBusinessObjectForPictogramElement(context
+						.getPictogramElement());
 		EcoreUtil.delete(e);
 		super.delete(context);
 	}
