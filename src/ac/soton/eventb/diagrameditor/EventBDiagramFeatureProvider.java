@@ -31,9 +31,10 @@ import org.eventb.emf.persistence.ProjectResource;
 import org.eventb.emf.persistence.factory.ProjectFactory;
 import org.rodinp.core.IRodinElement;
 
-import ac.soton.eventb.diagrameditor.features.EventBComponentDeleteFeature;
 import ac.soton.eventb.diagrameditor.features.EventBComponentDirectEditFeature;
-import ac.soton.eventb.diagrameditor.features.EventBRelationshipDeleteFeature;
+import ac.soton.eventb.diagrameditor.features.EventBElementFeature;
+import ac.soton.eventb.diagrameditor.features.EventBRelationFeature;
+import ac.soton.eventb.diagrameditor.features.MachineFeature;
 import ac.soton.eventb.diagrameditor.features.create.CreateEventBContextFeature;
 import ac.soton.eventb.diagrameditor.features.create.CreateEventBMachineFeature;
 import ac.soton.eventb.diagrameditor.features.create.CreateExtendsRelationshipFeature;
@@ -49,7 +50,8 @@ import ac.soton.eventb.diagrameditor.relations.MachineSeesRelation;
 public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 
 	private final ProjectResource pr;
-	private final EventBAddFeatureFactory eventBAddFeatureFactory;
+	private final EventBFeatureFactory<IAddContext, IAddFeature> eventBAddFeatureFactory;
+	private final EventBFeatureFactory<IDeleteContext, IDeleteFeature> eventBDeleteFeatureFactory;
 
 	public ProjectResource getProjectResource() {
 		return pr;
@@ -67,18 +69,22 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		this.eventBAddFeatureFactory = EventBAddFeatureFactory.getInstance();
-		
-		IFeature[] features = {
+
+		this.eventBAddFeatureFactory = new EventBFeatureFactory<>();
+		this.eventBDeleteFeatureFactory = new EventBFeatureFactory<>();
+
+		IEventBFeature[] features = {
 				new MachineFeature(),
-				new ContextFeature(),
+				new EventBElementFeature(),
 				new EventBRelationFeature()
 		};
-		
-		for(IFeature f : features) {
+
+		for(IEventBFeature f : features) {
 			if(f.canAdd()) {
 				this.eventBAddFeatureFactory.register(f.getAddMatcher());
+			}
+			if(f.canDelete()) {
+				this.eventBDeleteFeatureFactory.register(f.getDeleteMatcher());
 			}
 		}
 
@@ -125,6 +131,11 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 	}
 
 	@Override
+	public IDeleteFeature getDeleteFeature(IDeleteContext context) {
+		return this.eventBDeleteFeatureFactory.getFeature(context, this);
+	}
+
+	@Override
 	public IUpdateFeature getUpdateFeature(IUpdateContext context) {
 		if(context.getPictogramElement() instanceof Diagram) {
 			return new EventBProjectUpdateFeature(this);
@@ -135,19 +146,6 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 		return super.getUpdateFeature(context);
 	}
 
-
-
-	@Override
-	public IDeleteFeature getDeleteFeature(IDeleteContext context) {
-		if(getBusinessObjectForPictogramElement(context.getPictogramElement()) instanceof EventBNamedCommentedElement) {
-			return new EventBComponentDeleteFeature(this);
-		}
-		else if(getBusinessObjectForPictogramElement(context.getPictogramElement()) instanceof EventBRelation) {
-			return new EventBRelationshipDeleteFeature(this);
-		}
-		return super.getDeleteFeature(context);
-	}
-
 	@Override
 	public ICreateFeature[] getCreateFeatures() {
 		return new ICreateFeature[] {
@@ -155,7 +153,7 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 				new CreateEventBContextFeature(this)
 		};
 	}
-	
+
 
 	@Override
 	public ICreateConnectionFeature[] getCreateConnectionFeatures() {
