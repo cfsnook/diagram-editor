@@ -31,5 +31,16 @@
             name="Diagram Editor">
       </editor>
    </extension>
-
+   
+    <extension point="org.eclipse.ui.newWizards" id="creation-wizard">
+  	  <wizard
+  	     name="Graphiti Diagram Generator"
+  	     icon="icon.png"
+  	     category="org.eclipse.ui.Examples"
+  	     class="ac.soton.eventb.diagrameditor.GraphitiDiagramCreationWizard"
+  	     id="ac.soton.eventb.diagrameditor.GraphitiDiagramCreationWizardID">
+  	  	 <description>Graphiti Diagram Generator</description>  
+      </wizard>
+   </extension>
+   
 </plugin>

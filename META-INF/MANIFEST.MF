@@ -16,6 +16,13 @@ Require-Bundle: org.eclipse.ui,
  org.eventb.emf.persistence,
  org.eclipse.emf.common,
  org.eclipse.emf.ecore,
- org.eclipse.ui.ide
+ org.eclipse.ui.ide,
+ org.eclipse.emf.workspace;bundle-version="1.5.1",
+ org.eclipse.gmf.tooling.runtime,
+ org.eclipse.gmf.runtime.emf.core,
+ org.eclipse.gmf.runtime.emf.commands.core,
+ org.eclipse.gmf.runtime.notation.edit,
+ org.eclipse.gmf.runtime.diagram.core,
+ org.eventb.emf.diagram.project
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
