@@ -2,8 +2,12 @@ package ac.soton.eventb.diagrameditor.features;
 
 import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.IDeleteFeature;
+import org.eclipse.graphiti.features.IDirectEditingFeature;
+import org.eclipse.graphiti.features.IUpdateFeature;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.features.context.IDeleteContext;
+import org.eclipse.graphiti.features.context.IDirectEditingContext;
+import org.eclipse.graphiti.features.context.IUpdateContext;
 
 import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
 import ac.soton.eventb.diagrameditor.IEventBFeature;
@@ -19,7 +23,7 @@ public class EventBRelationFeature implements IEventBFeature {
 
 	@Override
 	public boolean canDelete() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -62,4 +66,26 @@ public class EventBRelationFeature implements IEventBFeature {
 			}
 		};
 	}
+
+	@Override
+	public boolean canDirectEdit() {
+		return false;
+	}
+
+	@Override
+	public Matcher<IDirectEditingContext, IDirectEditingFeature> getDirectEditingMatcher() {
+		return null;
+	}
+
+	@Override
+	public boolean canUpdate() {
+		return false;
+	}
+
+	@Override
+	public Matcher<IUpdateContext, IUpdateFeature> getUpdateMatcher() {
+		return null;
+	}
+
+	
 }

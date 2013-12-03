@@ -21,8 +21,7 @@ public class EventBFeatureFactory<C extends IContext, F extends IFeature> {
 				return m.getFeature(context, f);
 			}
 		}
-		throw new UnsupportedOperationException(
-				"Factory couldn't instantiate from " + context.toString());
+		return null;
 	}
 
 	public void register(Matcher<C, F> matcher) {

@@ -1,5 +1,7 @@
 package ac.soton.eventb.diagrameditor.features.update;
 
+import java.util.logging.Logger;
+
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.IReason;
 import org.eclipse.graphiti.features.context.IUpdateContext;
@@ -37,6 +39,7 @@ public class EventBProjectUpdateFeature extends AbstractUpdateFeature {
 
 	@Override
 	public boolean update(IUpdateContext context) {
+		Logger.getAnonymousLogger().severe("Logging.");
 		boolean updated = false;
 		Project project = (Project) this
 				.getBusinessObjectForPictogramElement(context

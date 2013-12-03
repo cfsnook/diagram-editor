@@ -2,8 +2,12 @@ package ac.soton.eventb.diagrameditor.features;
 
 import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.IDeleteFeature;
+import org.eclipse.graphiti.features.IDirectEditingFeature;
+import org.eclipse.graphiti.features.IUpdateFeature;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.features.context.IDeleteContext;
+import org.eclipse.graphiti.features.context.IDirectEditingContext;
+import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eventb.emf.core.EventBElement;
 import org.eventb.emf.core.EventBNamed;
 
@@ -11,6 +15,7 @@ import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
 import ac.soton.eventb.diagrameditor.IEventBFeature;
 import ac.soton.eventb.diagrameditor.Matcher;
 import ac.soton.eventb.diagrameditor.features.add.EventBComponentAddFeature;
+import ac.soton.eventb.diagrameditor.features.update.EventBComponentUpdateFeature;
 
 public class EventBElementFeature implements IEventBFeature {
 
@@ -47,6 +52,26 @@ public class EventBElementFeature implements IEventBFeature {
 			}
 		};
 	}
+	
+	@Override
+	public Matcher<IDirectEditingContext, IDirectEditingFeature> getDirectEditingMatcher() {
+		return new Matcher<IDirectEditingContext, IDirectEditingFeature>() {
+			
+			@Override
+			public boolean match(IDirectEditingContext o, EventBDiagramFeatureProvider e) {
+				return e.getBusinessObjectForPictogramElement(o.getPictogramElement()) instanceof EventBNamed;
+			}
+			
+			@Override
+			public IDirectEditingFeature getFeature(IDirectEditingContext o,
+					EventBDiagramFeatureProvider e) {
+				if (this.match(o, e)) {
+					return new EventBComponentDirectEditFeature(e);
+				}
+				return null;
+			}
+		};
+	}
 
 	@Override
 	public Matcher<IDeleteContext, IDeleteFeature> getDeleteMatcher() {
@@ -69,5 +94,34 @@ public class EventBElementFeature implements IEventBFeature {
 			}
 		};
 	}
+
+	@Override
+	public boolean canDirectEdit() {
+		return true;
+	}
+
+	@Override
+	public boolean canUpdate() {
+		return true;
+	}
+
+	@Override
+	public Matcher<IUpdateContext, IUpdateFeature> getUpdateMatcher() {
+		return new Matcher<IUpdateContext, IUpdateFeature>() {
+			
+			@Override
+			public boolean match(IUpdateContext o, EventBDiagramFeatureProvider e) {
+				return e.getBusinessObjectForPictogramElement(o.getPictogramElement()) instanceof EventBNamed;
+			}
+			
+			@Override
+			public IUpdateFeature getFeature(IUpdateContext o,
+					EventBDiagramFeatureProvider e) {
+				return new EventBComponentUpdateFeature(e);
+			}
+		};
+	}
+	
+	
 
 }

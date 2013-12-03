@@ -21,17 +21,14 @@ import org.eclipse.graphiti.features.context.IDeleteContext;
 import org.eclipse.graphiti.features.context.IDirectEditingContext;
 import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.impl.IIndependenceSolver;
-import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.ui.features.DefaultFeatureProvider;
 import org.eventb.emf.core.EventBElement;
-import org.eventb.emf.core.EventBNamedCommentedElement;
 import org.eventb.emf.core.EventBObject;
 import org.eventb.emf.core.Project;
 import org.eventb.emf.persistence.ProjectResource;
 import org.eventb.emf.persistence.factory.ProjectFactory;
 import org.rodinp.core.IRodinElement;
 
-import ac.soton.eventb.diagrameditor.features.EventBComponentDirectEditFeature;
 import ac.soton.eventb.diagrameditor.features.EventBElementFeature;
 import ac.soton.eventb.diagrameditor.features.EventBRelationFeature;
 import ac.soton.eventb.diagrameditor.features.MachineFeature;
@@ -40,8 +37,6 @@ import ac.soton.eventb.diagrameditor.features.create.CreateEventBMachineFeature;
 import ac.soton.eventb.diagrameditor.features.create.CreateExtendsRelationshipFeature;
 import ac.soton.eventb.diagrameditor.features.create.CreateRefinesRelationshipFeature;
 import ac.soton.eventb.diagrameditor.features.create.CreateSeesRelationshipFeature;
-import ac.soton.eventb.diagrameditor.features.update.EventBComponentUpdateFeature;
-import ac.soton.eventb.diagrameditor.features.update.EventBProjectUpdateFeature;
 import ac.soton.eventb.diagrameditor.relations.ContextExtendsRelation;
 import ac.soton.eventb.diagrameditor.relations.EventBRelation;
 import ac.soton.eventb.diagrameditor.relations.MachineRefinesRelation;
@@ -86,6 +81,8 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 
 	private final EventBFeatureFactory<IAddContext, IAddFeature> eventBAddFeatureFactory;
 	private final EventBFeatureFactory<IDeleteContext, IDeleteFeature> eventBDeleteFeatureFactory;
+	private final EventBFeatureFactory<IDirectEditingContext, IDirectEditingFeature> eventBDirectEditingFeatureFactory;
+	private final EventBFeatureFactory<IUpdateContext, IUpdateFeature> eventBUpdateFeatureFactory;
 	private final ProjectResource pr;
 
 	public EventBDiagramFeatureProvider(IDiagramTypeProvider dtp) {
@@ -104,9 +101,11 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 
 		this.eventBAddFeatureFactory = new EventBFeatureFactory<>();
 		this.eventBDeleteFeatureFactory = new EventBFeatureFactory<>();
+		this.eventBDirectEditingFeatureFactory = new EventBFeatureFactory<>();
+		this.eventBUpdateFeatureFactory = new EventBFeatureFactory<>();
 
 		final IEventBFeature[] features = { new MachineFeature(),
-				new EventBElementFeature(), new EventBRelationFeature() };
+				new EventBElementFeature(), new EventBRelationFeature(), new EventBProjectFeature() };
 
 		for (final IEventBFeature f : features) {
 			if (f.canAdd()) {
@@ -114,6 +113,12 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 			}
 			if (f.canDelete()) {
 				this.eventBDeleteFeatureFactory.register(f.getDeleteMatcher());
+			}
+			if (f.canDirectEdit()) {
+				this.eventBDirectEditingFeatureFactory.register(f.getDirectEditingMatcher());
+			}
+			if (f.canUpdate()) {
+				this.eventBUpdateFeatureFactory.register(f.getUpdateMatcher());
 			}
 		}
 
@@ -147,13 +152,7 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 	@Override
 	public IDirectEditingFeature getDirectEditingFeature(
 			IDirectEditingContext context) {
-
-		if (this.getBusinessObjectForPictogramElement(context
-				.getPictogramElement()) instanceof EventBNamedCommentedElement) {
-			return new EventBComponentDirectEditFeature(this);
-		}
-
-		return super.getDirectEditingFeature(context);
+		return this.eventBDirectEditingFeatureFactory.getFeature(context, this);
 	}
 
 	public Project getProject() {
@@ -167,13 +166,7 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 
 	@Override
 	public IUpdateFeature getUpdateFeature(IUpdateContext context) {
-		if (context.getPictogramElement() instanceof Diagram) {
-			return new EventBProjectUpdateFeature(this);
-		} else if (this.getBusinessObjectForPictogramElement(context
-				.getPictogramElement()) instanceof EventBNamedCommentedElement) {
-			return new EventBComponentUpdateFeature(this);
-		}
-		return super.getUpdateFeature(context);
+		return this.eventBUpdateFeatureFactory.getFeature(context, this);
 	}
 
 	public void save() {
