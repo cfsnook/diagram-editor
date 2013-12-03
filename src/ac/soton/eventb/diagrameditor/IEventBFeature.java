@@ -13,17 +13,17 @@ public interface IEventBFeature {
 	public boolean canAdd();
 
 	public boolean canDelete();
-	
+
 	public boolean canDirectEdit();
-	
+
+	public boolean canUpdate();
+
 	public Matcher<IAddContext, IAddFeature> getAddMatcher();
 
 	public Matcher<IDeleteContext, IDeleteFeature> getDeleteMatcher();
 
 	public Matcher<IDirectEditingContext, IDirectEditingFeature> getDirectEditingMatcher();
 
-	public boolean canUpdate();
-
 	public Matcher<IUpdateContext, IUpdateFeature> getUpdateMatcher();
-	
+
 }

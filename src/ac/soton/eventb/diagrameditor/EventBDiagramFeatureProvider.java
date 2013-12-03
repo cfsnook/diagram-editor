@@ -105,7 +105,8 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 		this.eventBUpdateFeatureFactory = new EventBFeatureFactory<>();
 
 		final IEventBFeature[] features = { new MachineFeature(),
-				new EventBElementFeature(), new EventBRelationFeature(), new EventBProjectFeature() };
+				new EventBElementFeature(), new EventBRelationFeature(),
+				new EventBProjectFeature() };
 
 		for (final IEventBFeature f : features) {
 			if (f.canAdd()) {
@@ -115,7 +116,8 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 				this.eventBDeleteFeatureFactory.register(f.getDeleteMatcher());
 			}
 			if (f.canDirectEdit()) {
-				this.eventBDirectEditingFeatureFactory.register(f.getDirectEditingMatcher());
+				this.eventBDirectEditingFeatureFactory.register(f
+						.getDirectEditingMatcher());
 			}
 			if (f.canUpdate()) {
 				this.eventBUpdateFeatureFactory.register(f.getUpdateMatcher());

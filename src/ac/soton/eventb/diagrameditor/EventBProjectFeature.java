@@ -1,7 +1,5 @@
 package ac.soton.eventb.diagrameditor;
 
-import java.util.logging.Logger;
-
 import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.IDeleteFeature;
 import org.eclipse.graphiti.features.IDirectEditingFeature;
@@ -32,6 +30,11 @@ public class EventBProjectFeature implements IEventBFeature {
 	}
 
 	@Override
+	public boolean canUpdate() {
+		return true;
+	}
+
+	@Override
 	public Matcher<IAddContext, IAddFeature> getAddMatcher() {
 		return null;
 	}
@@ -47,26 +50,22 @@ public class EventBProjectFeature implements IEventBFeature {
 	}
 
 	@Override
-	public boolean canUpdate() {
-		return true;
-	}
-
-	@Override
 	public Matcher<IUpdateContext, IUpdateFeature> getUpdateMatcher() {
 		return new Matcher<IUpdateContext, IUpdateFeature>() {
-			
-			@Override
-			public boolean match(IUpdateContext o, EventBDiagramFeatureProvider e) {
-				return o.getPictogramElement() instanceof Diagram;
-			}
-			
+
 			@Override
 			public IUpdateFeature getFeature(IUpdateContext o,
 					EventBDiagramFeatureProvider e) {
-				if(this.match(o, e)) {
+				if (this.match(o, e)) {
 					return new EventBProjectUpdateFeature(e);
 				}
 				return null;
+			}
+
+			@Override
+			public boolean match(IUpdateContext o,
+					EventBDiagramFeatureProvider e) {
+				return o.getPictogramElement() instanceof Diagram;
 			}
 		};
 	}

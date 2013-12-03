@@ -27,6 +27,16 @@ public class EventBRelationFeature implements IEventBFeature {
 	}
 
 	@Override
+	public boolean canDirectEdit() {
+		return false;
+	}
+
+	@Override
+	public boolean canUpdate() {
+		return false;
+	}
+
+	@Override
 	public Matcher<IAddContext, IAddFeature> getAddMatcher() {
 		return new Matcher<IAddContext, IAddFeature>() {
 
@@ -68,18 +78,8 @@ public class EventBRelationFeature implements IEventBFeature {
 	}
 
 	@Override
-	public boolean canDirectEdit() {
-		return false;
-	}
-
-	@Override
 	public Matcher<IDirectEditingContext, IDirectEditingFeature> getDirectEditingMatcher() {
 		return null;
-	}
-
-	@Override
-	public boolean canUpdate() {
-		return false;
 	}
 
 	@Override
@@ -87,5 +87,4 @@ public class EventBRelationFeature implements IEventBFeature {
 		return null;
 	}
 
-	
 }
