@@ -1,16 +1,25 @@
 package ac.soton.eventb.diagrameditor.features;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.graphiti.features.IAddFeature;
+import org.eclipse.graphiti.features.ICreateConnectionFeature;
+import org.eclipse.graphiti.features.ICreateFeature;
 import org.eclipse.graphiti.features.IDeleteFeature;
 import org.eclipse.graphiti.features.IDirectEditingFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.IUpdateFeature;
 import org.eclipse.graphiti.features.context.IAddConnectionContext;
 import org.eclipse.graphiti.features.context.IAddContext;
+import org.eclipse.graphiti.features.context.ICreateConnectionContext;
 import org.eclipse.graphiti.features.context.IDeleteContext;
 import org.eclipse.graphiti.features.context.IDirectEditingContext;
 import org.eclipse.graphiti.features.context.IUpdateContext;
+import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
 import org.eclipse.graphiti.features.impl.AbstractAddFeature;
+import org.eclipse.graphiti.features.impl.AbstractCreateConnectionFeature;
 import org.eclipse.graphiti.mm.algorithms.Polyline;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
@@ -18,13 +27,175 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.graphiti.services.IPeCreateService;
 import org.eclipse.graphiti.util.IColorConstant;
+import org.eventb.emf.core.context.Context;
+import org.eventb.emf.core.machine.Machine;
 
 import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
+import ac.soton.eventb.diagrameditor.relations.ContextExtendsRelation;
 import ac.soton.eventb.diagrameditor.relations.EventBRelation;
+import ac.soton.eventb.diagrameditor.relations.MachineRefinesRelation;
+import ac.soton.eventb.diagrameditor.relations.MachineSeesRelation;
+
+class CreateExtendsRelationshipFeature extends AbstractCreateConnectionFeature {
+
+	public CreateExtendsRelationshipFeature(IFeatureProvider fp) {
+		super(fp, "Extends", "Create an Event-B Extends Relationship");
+	}
+
+	@Override
+	public boolean canCreate(ICreateConnectionContext context) {
+		final EObject source = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getSourcePictogramElement());
+		final EObject target = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getTargetPictogramElement());
+
+		return source instanceof Context && target instanceof Context;
+	}
+
+	@Override
+	public boolean canStartConnection(ICreateConnectionContext context) {
+		final EObject source = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getSourcePictogramElement());
+
+		return source instanceof Context;
+	}
+
+	@Override
+	public Connection create(ICreateConnectionContext context) {
+		final EObject source = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getSourcePictogramElement());
+		final EObject target = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getTargetPictogramElement());
+
+		if (source instanceof Context && target instanceof Context) {
+			final ContextExtendsRelation msr = new ContextExtendsRelation(
+					(Context) source, (Context) target);
+			final AddConnectionContext acc = new AddConnectionContext(
+					context.getSourceAnchor(), context.getTargetAnchor());
+			acc.setNewObject(msr);
+			return (Connection) this.getFeatureProvider().addIfPossible(acc);
+		}
+		return null;
+	}
+
+}
+
+class CreateRefinesRelationshipFeature extends AbstractCreateConnectionFeature {
+
+	public CreateRefinesRelationshipFeature(IFeatureProvider fp) {
+		super(fp, "Refines", "Create an Event-B Refines Relationship");
+	}
+
+	@Override
+	public boolean canCreate(ICreateConnectionContext context) {
+		final EObject source = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getSourcePictogramElement());
+		final EObject target = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getTargetPictogramElement());
+
+		return source instanceof Machine && target instanceof Machine;
+	}
+
+	@Override
+	public boolean canStartConnection(ICreateConnectionContext context) {
+		final EObject source = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getSourcePictogramElement());
+
+		return source instanceof Machine;
+	}
+
+	@Override
+	public Connection create(ICreateConnectionContext context) {
+		final EObject source = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getSourcePictogramElement());
+		final EObject target = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getTargetPictogramElement());
+
+		if (source instanceof Machine && target instanceof Machine) {
+			final MachineRefinesRelation msr = new MachineRefinesRelation(
+					(Machine) source, (Machine) target);
+			final AddConnectionContext acc = new AddConnectionContext(
+					context.getSourceAnchor(), context.getTargetAnchor());
+			acc.setNewObject(msr);
+			return (Connection) this.getFeatureProvider().addIfPossible(acc);
+		}
+		return null;
+	}
+
+}
+
+class CreateSeesRelationshipFeature extends AbstractCreateConnectionFeature {
+
+	public CreateSeesRelationshipFeature(IFeatureProvider fp) {
+		super(fp, "Sees", "Create an Event-B Sees Relationship");
+	}
+
+	@Override
+	public boolean canCreate(ICreateConnectionContext context) {
+		final EObject source = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getSourcePictogramElement());
+		final EObject target = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getTargetPictogramElement());
+
+		return source instanceof Machine && target instanceof Context;
+	}
+
+	@Override
+	public boolean canStartConnection(ICreateConnectionContext context) {
+		final EObject source = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getSourcePictogramElement());
+
+		return source instanceof Machine;
+	}
+
+	@Override
+	public Connection create(ICreateConnectionContext context) {
+		final EObject source = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getSourcePictogramElement());
+		final EObject target = (EObject) this
+				.getBusinessObjectForPictogramElement(context
+						.getTargetPictogramElement());
+
+		if (source instanceof Machine && target instanceof Context) {
+			final MachineSeesRelation msr = new MachineSeesRelation(
+					(Machine) source, (Context) target);
+			final AddConnectionContext acc = new AddConnectionContext(
+					context.getSourceAnchor(), context.getTargetAnchor());
+			acc.setNewObject(msr);
+			return (Connection) this.getFeatureProvider().addIfPossible(acc);
+		}
+		return null;
+	}
+
+}
 
 public class EventBRelationFeature implements IEventBFeature {
 	@Override
 	public boolean canAdd() {
+		return true;
+	}
+
+	@Override
+	public boolean canCreate() {
+		return false;
+	}
+
+	@Override
+	public boolean canCreateRelationship() {
 		return true;
 	}
 
@@ -64,6 +235,22 @@ public class EventBRelationFeature implements IEventBFeature {
 	}
 
 	@Override
+	public Collection<ICreateFeature> getCreateFeatures(
+			EventBDiagramFeatureProvider e) {
+		return null;
+	}
+
+	@Override
+	public Collection<? extends ICreateConnectionFeature> getCreateRelationshipFeatures(
+			EventBDiagramFeatureProvider fp) {
+		final ArrayList<ICreateConnectionFeature> relationshipList = new ArrayList<>();
+		relationshipList.add(new CreateExtendsRelationshipFeature(fp));
+		relationshipList.add(new CreateRefinesRelationshipFeature(fp));
+		relationshipList.add(new CreateSeesRelationshipFeature(fp));
+		return relationshipList;
+	}
+
+	@Override
 	public Matcher<IDeleteContext, IDeleteFeature> getDeleteMatcher() {
 		return new Matcher<IDeleteContext, IDeleteFeature>() {
 			@Override
@@ -95,6 +282,7 @@ public class EventBRelationFeature implements IEventBFeature {
 	}
 
 }
+
 class EventBRelationshipAddFeature extends AbstractAddFeature {
 
 	public EventBRelationshipAddFeature(IFeatureProvider fp) {
@@ -133,8 +321,9 @@ class EventBRelationshipAddFeature extends AbstractAddFeature {
 	}
 
 }
+
 class EventBRelationshipDeleteFeature extends
-org.eclipse.graphiti.ui.features.DefaultDeleteFeature {
+		org.eclipse.graphiti.ui.features.DefaultDeleteFeature {
 
 	public EventBRelationshipDeleteFeature(IFeatureProvider fp) {
 		super(fp);

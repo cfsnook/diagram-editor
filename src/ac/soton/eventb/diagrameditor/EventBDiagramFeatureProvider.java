@@ -1,7 +1,9 @@
 package ac.soton.eventb.diagrameditor;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,11 +36,6 @@ import ac.soton.eventb.diagrameditor.features.EventBFeatureFactory;
 import ac.soton.eventb.diagrameditor.features.EventBProjectFeature;
 import ac.soton.eventb.diagrameditor.features.EventBRelationFeature;
 import ac.soton.eventb.diagrameditor.features.IEventBFeature;
-import ac.soton.eventb.diagrameditor.features.create.CreateEventBContextFeature;
-import ac.soton.eventb.diagrameditor.features.create.CreateEventBMachineFeature;
-import ac.soton.eventb.diagrameditor.features.create.CreateExtendsRelationshipFeature;
-import ac.soton.eventb.diagrameditor.features.create.CreateRefinesRelationshipFeature;
-import ac.soton.eventb.diagrameditor.features.create.CreateSeesRelationshipFeature;
 import ac.soton.eventb.diagrameditor.relations.ContextExtendsRelation;
 import ac.soton.eventb.diagrameditor.relations.EventBRelation;
 import ac.soton.eventb.diagrameditor.relations.MachineRefinesRelation;
@@ -81,10 +78,14 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 		}
 	}
 
+	private final List<ICreateFeature> createFeatures;
+
+	private final List<ICreateConnectionFeature> createRelationshipFeatures;
 	private final EventBFeatureFactory<IAddContext, IAddFeature> eventBAddFeatureFactory;
 	private final EventBFeatureFactory<IDeleteContext, IDeleteFeature> eventBDeleteFeatureFactory;
 	private final EventBFeatureFactory<IDirectEditingContext, IDirectEditingFeature> eventBDirectEditingFeatureFactory;
 	private final EventBFeatureFactory<IUpdateContext, IUpdateFeature> eventBUpdateFeatureFactory;
+
 	private final ProjectResource pr;
 
 	public EventBDiagramFeatureProvider(IDiagramTypeProvider dtp) {
@@ -92,7 +93,7 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 
 		final ResourceSet rs = new ResourceSetImpl();
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
-				.put("*", new ProjectFactory());
+		.put("*", new ProjectFactory());
 		this.pr = (ProjectResource) rs.createResource(URI
 				.createPlatformResourceURI("DemoProject", true));
 		try {
@@ -100,14 +101,15 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
-
+		this.createFeatures = new ArrayList<>();
+		this.createRelationshipFeatures = new ArrayList<>();
 		this.eventBAddFeatureFactory = new EventBFeatureFactory<>();
 		this.eventBDeleteFeatureFactory = new EventBFeatureFactory<>();
 		this.eventBDirectEditingFeatureFactory = new EventBFeatureFactory<>();
 		this.eventBUpdateFeatureFactory = new EventBFeatureFactory<>();
 
-		final IEventBFeature[] features = { new EventBElementFeature(), new EventBRelationFeature(),
-				new EventBProjectFeature() };
+		final IEventBFeature[] features = { new EventBElementFeature(),
+				new EventBRelationFeature(), new EventBProjectFeature() };
 
 		for (final IEventBFeature f : features) {
 			if (f.canAdd()) {
@@ -123,7 +125,16 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 			if (f.canUpdate()) {
 				this.eventBUpdateFeatureFactory.register(f.getUpdateMatcher());
 			}
+			if (f.canCreate()) {
+				this.createFeatures.addAll(f.getCreateFeatures(this));
+			}
+			if (f.canCreateRelationship()) {
+				this.createRelationshipFeatures.addAll(f
+						.getCreateRelationshipFeatures(this));
+			}
 		}
+
+		Logger.getAnonymousLogger().severe(String.format("%d Features and %d Relations", this.createFeatures.size(), this.createRelationshipFeatures.size()));
 
 		this.setIndependenceSolver(new EventBIndependenceSolver());
 	}
@@ -135,16 +146,12 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 
 	@Override
 	public ICreateConnectionFeature[] getCreateConnectionFeatures() {
-		return new ICreateConnectionFeature[] {
-				new CreateSeesRelationshipFeature(this),
-				new CreateRefinesRelationshipFeature(this),
-				new CreateExtendsRelationshipFeature(this) };
+		return this.createRelationshipFeatures.toArray(new ICreateConnectionFeature[] {});
 	}
 
 	@Override
 	public ICreateFeature[] getCreateFeatures() {
-		return new ICreateFeature[] { new CreateEventBMachineFeature(this),
-				new CreateEventBContextFeature(this) };
+		return this.createFeatures.toArray(new ICreateFeature[] {});
 	}
 
 	@Override

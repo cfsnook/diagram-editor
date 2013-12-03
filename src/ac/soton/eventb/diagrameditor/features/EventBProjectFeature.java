@@ -1,8 +1,11 @@
 package ac.soton.eventb.diagrameditor.features;
 
+import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.eclipse.graphiti.features.IAddFeature;
+import org.eclipse.graphiti.features.ICreateConnectionFeature;
+import org.eclipse.graphiti.features.ICreateFeature;
 import org.eclipse.graphiti.features.IDeleteFeature;
 import org.eclipse.graphiti.features.IDirectEditingFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
@@ -40,6 +43,16 @@ public class EventBProjectFeature implements IEventBFeature {
 	}
 
 	@Override
+	public boolean canCreate() {
+		return false;
+	}
+
+	@Override
+	public boolean canCreateRelationship() {
+		return false;
+	}
+
+	@Override
 	public boolean canDelete() {
 		return false;
 	}
@@ -56,6 +69,18 @@ public class EventBProjectFeature implements IEventBFeature {
 
 	@Override
 	public Matcher<IAddContext, IAddFeature> getAddMatcher() {
+		return null;
+	}
+
+	@Override
+	public Collection<ICreateFeature> getCreateFeatures(
+			EventBDiagramFeatureProvider e) {
+		return null;
+	}
+
+	@Override
+	public Collection<? extends ICreateConnectionFeature> getCreateRelationshipFeatures(
+			EventBDiagramFeatureProvider eventBDiagramFeatureProvider) {
 		return null;
 	}
 
