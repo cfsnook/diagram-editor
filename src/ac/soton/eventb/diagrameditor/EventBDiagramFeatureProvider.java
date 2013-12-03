@@ -16,7 +16,6 @@ import org.eclipse.graphiti.features.ICreateFeature;
 import org.eclipse.graphiti.features.IDeleteFeature;
 import org.eclipse.graphiti.features.IDirectEditingFeature;
 import org.eclipse.graphiti.features.IUpdateFeature;
-import org.eclipse.graphiti.features.context.IAddConnectionContext;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.features.context.IDeleteContext;
 import org.eclipse.graphiti.features.context.IDirectEditingContext;
@@ -35,9 +34,6 @@ import org.rodinp.core.IRodinElement;
 import ac.soton.eventb.diagrameditor.features.EventBComponentDeleteFeature;
 import ac.soton.eventb.diagrameditor.features.EventBComponentDirectEditFeature;
 import ac.soton.eventb.diagrameditor.features.EventBRelationshipDeleteFeature;
-import ac.soton.eventb.diagrameditor.features.add.EventBComponentAddFeature;
-import ac.soton.eventb.diagrameditor.features.add.EventBMachineAddFeature;
-import ac.soton.eventb.diagrameditor.features.add.EventBRelationshipAddFeature;
 import ac.soton.eventb.diagrameditor.features.create.CreateEventBContextFeature;
 import ac.soton.eventb.diagrameditor.features.create.CreateEventBMachineFeature;
 import ac.soton.eventb.diagrameditor.features.create.CreateExtendsRelationshipFeature;
@@ -53,6 +49,7 @@ import ac.soton.eventb.diagrameditor.relations.MachineSeesRelation;
 public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 
 	private final ProjectResource pr;
+	private final EventBAddFeatureFactory eventBAddFeatureFactory;
 
 	public ProjectResource getProjectResource() {
 		return pr;
@@ -63,12 +60,26 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 
 		ResourceSet rs = new ResourceSetImpl();
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new ProjectFactory());
-		this.pr = (ProjectResource) rs.createResource(URI.createPlatformResourceURI("DecompExample", true));
+		this.pr = (ProjectResource) rs.createResource(URI.createPlatformResourceURI("DemoProject", true));
 		try {
 			pr.load(new HashMap<>());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		this.eventBAddFeatureFactory = EventBAddFeatureFactory.getInstance();
+		
+		IFeature[] features = {
+				new MachineFeature(),
+				new ContextFeature(),
+				new EventBRelationFeature()
+		};
+		
+		for(IFeature f : features) {
+			if(f.canAdd()) {
+				this.eventBAddFeatureFactory.register(f.getAddMatcher());
+			}
 		}
 
 		setIndependenceSolver(new IIndependenceSolver() {
@@ -110,20 +121,7 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 
 	@Override
 	public IAddFeature getAddFeature(IAddContext context) {
-		if(context instanceof IAddConnectionContext) {
-			if(context.getNewObject() instanceof EventBRelation) {
-				return new EventBRelationshipAddFeature(this);
-			}
-		} else {
-			if (context.getNewObject() instanceof EventBNamedCommentedElement) {
-				return new EventBMachineAddFeature(this);
-			}
-			else if (context.getNewObject() instanceof EventBNamedCommentedElement) {
-				return new EventBComponentAddFeature(this);
-			}
-		}
-
-		return super.getAddFeature(context);
+		return this.eventBAddFeatureFactory.getFeature(context, this);
 	}
 
 	@Override
