@@ -31,7 +31,6 @@ import org.rodinp.core.IRodinElement;
 
 import ac.soton.eventb.diagrameditor.features.EventBElementFeature;
 import ac.soton.eventb.diagrameditor.features.EventBRelationFeature;
-import ac.soton.eventb.diagrameditor.features.EventBMachineFeature;
 import ac.soton.eventb.diagrameditor.features.create.CreateEventBContextFeature;
 import ac.soton.eventb.diagrameditor.features.create.CreateEventBMachineFeature;
 import ac.soton.eventb.diagrameditor.features.create.CreateExtendsRelationshipFeature;
@@ -104,8 +103,7 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 		this.eventBDirectEditingFeatureFactory = new EventBFeatureFactory<>();
 		this.eventBUpdateFeatureFactory = new EventBFeatureFactory<>();
 
-		final IEventBFeature[] features = { new EventBMachineFeature(),
-				new EventBElementFeature(), new EventBRelationFeature(),
+		final IEventBFeature[] features = { new EventBElementFeature(), new EventBRelationFeature(),
 				new EventBProjectFeature() };
 
 		for (final IEventBFeature f : features) {
