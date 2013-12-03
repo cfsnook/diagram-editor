@@ -8,7 +8,7 @@ import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
 import ac.soton.eventb.diagrameditor.Matcher;
 import ac.soton.eventb.diagrameditor.features.add.EventBMachineAddFeature;
 
-public class MachineFeature extends EventBElementFeature {
+public class EventBMachineFeature extends EventBElementFeature {
 	@Override
 	public Matcher<IAddContext, IAddFeature> getAddMatcher() {
 		return new Matcher<IAddContext, IAddFeature>() {
