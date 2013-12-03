@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="diagramfeatures" name="Diagram Features" schema="schema/diagramfeatures.exsd"/>
+   <extension-point id="ac.soton.eventb.diagrameditor.featureprovider" name="Feature Provider" schema="schema/ac.soton.eventb.diagrameditor.featureprovider.exsd"/>
    <extension
          point="org.eclipse.graphiti.ui.diagramTypeProviders">
       <diagramTypeProvider

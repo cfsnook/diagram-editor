@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -108,8 +113,27 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 		this.eventBDirectEditingFeatureFactory = new EventBFeatureFactory<>();
 		this.eventBUpdateFeatureFactory = new EventBFeatureFactory<>();
 
-		final IEventBFeature[] features = { new EventBElementFeature(),
+		final IExtensionRegistry registry = Platform.getExtensionRegistry();
+		final IExtensionPoint extensionPoint = registry.getExtensionPoint("ac.soton.eventb.diagrameditor.featureprovider");
+
+		final IEventBFeature[] providedFeatures = { new EventBElementFeature(),
 				new EventBRelationFeature(), new EventBProjectFeature() };
+		final ArrayList<IEventBFeature> features = new ArrayList<>();
+
+		for(final IEventBFeature feature : providedFeatures) {
+			features.add(feature);
+		}
+
+		for(final IConfigurationElement element : extensionPoint.getConfigurationElements()) {
+			try {
+				features.add((IEventBFeature)element.createExecutableExtension("feature"));
+			} catch (final CoreException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+
 
 		for (final IEventBFeature f : features) {
 			if (f.canAdd()) {
