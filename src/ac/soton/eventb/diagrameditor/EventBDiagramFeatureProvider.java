@@ -66,7 +66,6 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 		try {
 			pr.load(new HashMap<>());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
