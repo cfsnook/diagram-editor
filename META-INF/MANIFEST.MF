@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Diagram-editor
-Bundle-SymbolicName: diagram-editor;singleton:=true
-Bundle-Version: 1.0.0.1
+Bundle-Name: Diagram Editor
+Bundle-SymbolicName: ac.soton.eventb.diagrameditor;singleton:=true
+Bundle-Version: 1.0.0.2
 Bundle-Activator: ac.soton.eventb.diagrameditor.Activator
 Bundle-Vendor: University of Southampton
 Require-Bundle: org.eclipse.ui,
