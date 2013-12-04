@@ -124,7 +124,6 @@ class EventBProjectUpdateFeature extends AbstractUpdateFeature {
 
 	@Override
 	public boolean canUpdate(IUpdateContext context) {
-
 		return context.getPictogramElement() instanceof Diagram;
 	}
 
@@ -224,7 +223,7 @@ class EventBProjectUpdateFeature extends AbstractUpdateFeature {
 
 	@Override
 	public IReason updateNeeded(IUpdateContext context) {
-		return Reason.createFalseReason();
+		return Reason.createTrueReason();
 	}
 
 }

@@ -103,6 +103,10 @@ class EventBComponentAddFeature extends AbstractAddShapeFeature {
 
 	private static final IColorConstant CLASS_BACKGROUND = new ColorConstant(
 			255, 255, 255);
+	private static final IColorConstant MACHINE_BACKGROUND = new ColorConstant(
+			255, 200, 255);
+	private static final IColorConstant CONTEXT_BACKGROUND = new ColorConstant(
+			200, 200, 255);
 	private static final IColorConstant CLASS_FOREGROUND = new ColorConstant(
 			100, 50, 50);
 
@@ -130,7 +134,11 @@ class EventBComponentAddFeature extends AbstractAddShapeFeature {
 			final RoundedRectangle rr = gaService.createRoundedRectangle(
 					containerShape, 5, 5);
 			rr.setForeground(this.manageColor(CLASS_FOREGROUND));
-			rr.setBackground(this.manageColor(CLASS_BACKGROUND));
+			if(element instanceof Machine) {
+				rr.setBackground(this.manageColor(MACHINE_BACKGROUND));
+			} else {
+				rr.setBackground(this.manageColor(CONTEXT_BACKGROUND));
+			}
 			rr.setLineWidth(new Integer(2));
 			gaService.setLocationAndSize(rr, context.getX(), context.getY(),
 					width, height);
@@ -418,7 +426,7 @@ public class EventBElementFeature implements IEventBFeature {
 			public boolean match(IUpdateContext o,
 					EventBDiagramFeatureProvider e) {
 				return e.getBusinessObjectForPictogramElement(o
-						.getPictogramElement()) instanceof EventBNamed;
+						.getPictogramElement()) instanceof EventBNamed && !(o.getPictogramElement() instanceof Diagram);
 			}
 		};
 	}
