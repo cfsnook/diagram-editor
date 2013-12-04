@@ -22,7 +22,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.gmf.runtime.emf.core,
  org.eclipse.gmf.runtime.emf.commands.core,
  org.eclipse.gmf.runtime.notation.edit,
- org.eclipse.gmf.runtime.diagram.core,
- org.eventb.emf.diagram.project
+ org.eclipse.gmf.runtime.diagram.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

@@ -33,10 +33,14 @@
    </extension>
    
     <extension point="org.eclipse.ui.newWizards" id="creation-wizard">
+      <category
+            name="Group 29- Craphiti Diagram Generator"
+            id="Group 29 Craphiti Diagram Generator">
+      </category>
   	  <wizard
   	     name="Graphiti Diagram Generator"
   	     icon="icon.png"
-  	     category="org.eclipse.ui.Examples"
+  	     category="Group 29 Craphiti Diagram Generator"
   	     class="ac.soton.eventb.diagrameditor.GraphitiDiagramCreationWizard"
   	     id="ac.soton.eventb.diagrameditor.GraphitiDiagramCreationWizardID">
   	  	 <description>Graphiti Diagram Generator</description>  
