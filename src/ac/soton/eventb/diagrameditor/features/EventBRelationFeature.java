@@ -20,8 +20,11 @@ import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
 import org.eclipse.graphiti.features.impl.AbstractAddFeature;
 import org.eclipse.graphiti.features.impl.AbstractCreateConnectionFeature;
+import org.eclipse.graphiti.mm.GraphicsAlgorithmContainer;
+import org.eclipse.graphiti.mm.algorithms.Polygon;
 import org.eclipse.graphiti.mm.algorithms.Polyline;
 import org.eclipse.graphiti.mm.pictograms.Connection;
+import org.eclipse.graphiti.mm.pictograms.ConnectionDecorator;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
@@ -284,7 +287,19 @@ public class EventBRelationFeature implements IEventBFeature {
 }
 
 class EventBRelationshipAddFeature extends AbstractAddFeature {
-
+	//For creating the polyline arrow
+	 private Polyline createPolylineArrow(GraphicsAlgorithmContainer container) {
+	        IGaService gaService = Graphiti.getGaService();
+	        Polygon polygon =
+	            gaService.createPolygon(container, new int[] { -12, 10, 1, 0, -12,
+	                -10 });
+	        polygon.setForeground(manageColor(IColorConstant.BLACK));
+	        polygon.setBackground(manageColor(IColorConstant.BLACK));
+	        polygon.setLineWidth(1);
+	        polygon.setFilled(true);
+	        return polygon;
+	    }
+	
 	public EventBRelationshipAddFeature(IFeatureProvider fp) {
 		super(fp);
 	}
@@ -303,11 +318,16 @@ class EventBRelationshipAddFeature extends AbstractAddFeature {
 		final IGaService gaService = Graphiti.getGaService();
 		final Polyline polyline = gaService.createPolyline(connection);
 		polyline.setLineWidth(new Integer(2));
-		polyline.setForeground(this.manageColor(IColorConstant.BLACK));
+		polyline.setForeground(this.manageColor(IColorConstant.RED));
 
 		// create link and wire it
 		this.link(connection, context.getNewObject());
-
+		
+		ConnectionDecorator conDeco;
+		conDeco = peCreateService
+              .createConnectionDecorator(connection, false, 1.0, true);
+		createPolylineArrow(conDeco);
+        
 		return connection;
 	}
 
