@@ -23,6 +23,7 @@ import org.eclipse.graphiti.features.impl.AbstractCreateConnectionFeature;
 import org.eclipse.graphiti.mm.GraphicsAlgorithmContainer;
 import org.eclipse.graphiti.mm.algorithms.Polygon;
 import org.eclipse.graphiti.mm.algorithms.Polyline;
+import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ConnectionDecorator;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
@@ -224,6 +225,16 @@ public class EventBRelationFeature implements IEventBFeature {
 			@Override
 			public IAddFeature getFeature(IAddContext o,
 					EventBDiagramFeatureProvider e) {
+				
+				if(o.toString().contains("MachineRefinesRelation")){
+					EventBRelationshipAddFeature.i = 1;
+				}
+				else if(o.toString().contains("MachineSeesRelation")){
+					EventBRelationshipAddFeature.i = 2;
+				}else if(o.toString().contains("ContextExtendsRelation")){
+					EventBRelationshipAddFeature.i = 3;
+				}
+
 				if (this.match(o, e)) {
 					return new EventBRelationshipAddFeature(e);
 				}
@@ -287,19 +298,37 @@ public class EventBRelationFeature implements IEventBFeature {
 }
 
 class EventBRelationshipAddFeature extends AbstractAddFeature {
+	public static int i;
 	//For creating the polyline arrow
-	 private Polyline createPolylineArrow(GraphicsAlgorithmContainer container) {
-	        IGaService gaService = Graphiti.getGaService();
-	        Polygon polygon =
-	            gaService.createPolygon(container, new int[] { -12, 10, 1, 0, -12,
-	                -10 });
-	        polygon.setForeground(manageColor(IColorConstant.BLACK));
-	        polygon.setBackground(manageColor(IColorConstant.BLACK));
-	        polygon.setLineWidth(1);
-	        polygon.setFilled(true);
-	        return polygon;
-	    }
-	
+	private Polyline createPolylineArrow(GraphicsAlgorithmContainer container) {
+		IGaService gaService = Graphiti.getGaService();
+		Polygon polygon =
+				gaService.createPolygon(container, new int[] { -12, 10, 1, 0, -12,
+						-10 });
+		polygon.setForeground(manageColor(IColorConstant.BLACK));
+		polygon.setBackground(manageColor(IColorConstant.BLACK));
+		polygon.setLineWidth(1);
+		polygon.setFilled(true);
+		return polygon;
+	}
+
+	private Text createLabel(GraphicsAlgorithmContainer container) {
+		IGaService gaService = Graphiti.getGaService();
+		Text text = gaService.createText(container);
+		text.setForeground(manageColor(IColorConstant.BLACK));
+		gaService.setLocation(text, 10, 0);
+
+		if(i == 1){
+			text.setValue("refines");
+		}else if(i == 2){
+			text.setValue("sees");
+		}else if(i == 3){
+			text.setValue("extends");
+		}
+
+		return text;
+	}
+
 	public EventBRelationshipAddFeature(IFeatureProvider fp) {
 		super(fp);
 	}
@@ -322,12 +351,16 @@ class EventBRelationshipAddFeature extends AbstractAddFeature {
 
 		// create link and wire it
 		this.link(connection, context.getNewObject());
-		
+		ConnectionDecorator textDecorator =
+				peCreateService.createConnectionDecorator(connection, true,
+						0.5, true);
+		createLabel(textDecorator);
+
 		ConnectionDecorator conDeco;
 		conDeco = peCreateService
-              .createConnectionDecorator(connection, false, 1.0, true);
+				.createConnectionDecorator(connection, false, 1.0, true);
 		createPolylineArrow(conDeco);
-        
+
 		return connection;
 	}
 
