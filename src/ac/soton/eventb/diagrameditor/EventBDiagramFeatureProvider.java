@@ -7,10 +7,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -29,6 +32,9 @@ import org.eclipse.graphiti.features.context.IDirectEditingContext;
 import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.impl.IIndependenceSolver;
 import org.eclipse.graphiti.ui.features.DefaultFeatureProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eventb.emf.core.EventBElement;
 import org.eventb.emf.core.EventBObject;
 import org.eventb.emf.core.Project;
@@ -94,17 +100,31 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 	private final EventBFeatureFactory<IDeleteContext, IDeleteFeature> eventBDeleteFeatureFactory;
 	private final EventBFeatureFactory<IDirectEditingContext, IDirectEditingFeature> eventBDirectEditingFeatureFactory;
 	private final EventBFeatureFactory<IUpdateContext, IUpdateFeature> eventBUpdateFeatureFactory;
-
+	
 	final ProjectResource pr;
 
 	public EventBDiagramFeatureProvider(IDiagramTypeProvider dtp) {
 		super(dtp);
-
+		
+		String projectName = null;
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+	    if (window != null)
+	    {
+	        IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection();
+	        Object firstElement = selection.getFirstElement();
+	        if (firstElement instanceof IAdaptable)
+	        {
+	            IProject project = (IProject)((IAdaptable)firstElement).getAdapter(IProject.class);
+	            IPath path = project.getFullPath();
+	            projectName = path.toString();
+	        }
+	    }
+	    
 		final ResourceSet rs = new ResourceSetImpl();
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
 		.put("*", new ProjectFactory()); //$NON-NLS-1$
 		this.pr = (ProjectResource) rs.createResource(URI
-				.createPlatformResourceURI("DemoProject", true)); //$NON-NLS-1$
+				.createPlatformResourceURI(projectName.substring(1), true)); //$NON-NLS-1$
 		try {
 			this.pr.load(new HashMap<>());
 		} catch (final IOException e) {
