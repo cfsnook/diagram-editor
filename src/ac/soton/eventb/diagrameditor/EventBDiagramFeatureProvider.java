@@ -7,13 +7,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -105,26 +103,22 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 
 	public EventBDiagramFeatureProvider(IDiagramTypeProvider dtp) {
 		super(dtp);
-		
-		String projectName = null;
+		IFile file = null;
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 	    if (window != null)
 	    {
 	        IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection();
 	        Object firstElement = selection.getFirstElement();
-	        if (firstElement instanceof IAdaptable)
-	        {
-	            IProject project = (IProject)((IAdaptable)firstElement).getAdapter(IProject.class);
-	            IPath path = project.getFullPath();
-	            projectName = path.toString();
-	        }
+	        file = (IFile) firstElement;
+	        
 	    }
 	    
 		final ResourceSet rs = new ResourceSetImpl();
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
 		.put("*", new ProjectFactory()); //$NON-NLS-1$
 		this.pr = (ProjectResource) rs.createResource(URI
-				.createPlatformResourceURI(projectName.substring(1), true)); //$NON-NLS-1$
+				.createPlatformResourceURI(file.getFullPath()
+						.toString(), true)); //$NON-NLS-1$
 		try {
 			this.pr.load(new HashMap<>());
 		} catch (final IOException e) {
