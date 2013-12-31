@@ -70,6 +70,11 @@ class ClassNameInputDialog {
 }
 
 class CreateEventBContextFeature extends AbstractCreateFeature {
+	
+	private static final String dialogTitle = "Create Context";
+	 
+    private static final String USER_QUESTION = "Enter new context name";
+	
 	public CreateEventBContextFeature(IFeatureProvider fp) {
 		super(fp, "Context", "An EventB Context"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -83,9 +88,14 @@ class CreateEventBContextFeature extends AbstractCreateFeature {
 
 	@Override
 	public Object[] create(ICreateContext context) {
+		String newClassName = ClassNameInputDialog.nameOfEClass(dialogTitle, USER_QUESTION, "");
+	       if (newClassName == null || newClassName.trim().length() == 0) {
+	           return EMPTY;
+	       }
 		final Context c = ContextFactory.eINSTANCE.createContext();
 		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
 		.getComponents().add(c);
+		c.setName(newClassName);
 		this.addGraphicalRepresentation(context, c);
 		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
 
