@@ -70,11 +70,11 @@ class ClassNameInputDialog {
 }
 
 class CreateEventBContextFeature extends AbstractCreateFeature {
-	
+
 	private static final String dialogTitle = "Create Context";
-	 
-    private static final String USER_QUESTION = "Enter new context name";
-	
+
+	private static final String USER_QUESTION = "Enter new context name";
+
 	public CreateEventBContextFeature(IFeatureProvider fp) {
 		super(fp, "Context", "An EventB Context"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -89,9 +89,9 @@ class CreateEventBContextFeature extends AbstractCreateFeature {
 	@Override
 	public Object[] create(ICreateContext context) {
 		String newClassName = ClassNameInputDialog.nameOfEClass(dialogTitle, USER_QUESTION, "");
-	       if (newClassName == null || newClassName.trim().length() == 0) {
-	           return EMPTY;
-	       }
+		if (newClassName == null || newClassName.trim().length() == 0) {
+			return EMPTY;
+		}
 		final Context c = ContextFactory.eINSTANCE.createContext();
 		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
 		.getComponents().add(c);
@@ -106,11 +106,11 @@ class CreateEventBContextFeature extends AbstractCreateFeature {
 }
 
 class CreateEventBMachineFeature extends AbstractCreateFeature {
-	
+
 	private static final String dialogTitle = "Create Machine";
-	 
-    private static final String USER_QUESTION = "Enter new machine name";
-	
+
+	private static final String USER_QUESTION = "Enter new machine name";
+
 	public CreateEventBMachineFeature(IFeatureProvider fp) {
 		super(fp, "Machine", "An EventB Machine"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -125,16 +125,16 @@ class CreateEventBMachineFeature extends AbstractCreateFeature {
 	@Override
 	public Object[] create(ICreateContext context) {
 		String newClassName = ClassNameInputDialog.nameOfEClass(dialogTitle, USER_QUESTION, "");
-	       if (newClassName == null || newClassName.trim().length() == 0) {
-	           return EMPTY;
-	       }
+		if (newClassName == null || newClassName.trim().length() == 0) {
+			return EMPTY;
+		}
 		final Machine m = MachineFactory.eINSTANCE.createMachine();
 		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
 		.getComponents().add(m);
 		m.setName(newClassName);;
 		this.addGraphicalRepresentation(context, m);
 		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
-		
+
 		// ((EventBDiagramFeatureProvider)this.getFeatureProvider()).save();
 		return new Object[] { m };
 	}
@@ -199,7 +199,7 @@ class EventBComponentAddFeature extends AbstractAddShapeFeature {
 			text.setFont(gaService.manageFont(this.getDiagram(), "Arial", 10, //$NON-NLS-1$
 					false, false));
 			gaService.setLocationAndSize(text, 0, 0, width, 20);
-			
+
 			// create link and wire it
 			this.link(shape, element);
 		}
