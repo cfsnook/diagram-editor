@@ -37,6 +37,10 @@ import org.eclipse.graphiti.services.IPeCreateService;
 import org.eclipse.graphiti.ui.features.DefaultDeleteFeature;
 import org.eclipse.graphiti.util.ColorConstant;
 import org.eclipse.graphiti.util.IColorConstant;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.eventb.emf.core.EventBElement;
 import org.eventb.emf.core.EventBNamed;
 import org.eventb.emf.core.EventBNamedCommentedElement;
@@ -46,8 +50,31 @@ import org.eventb.emf.core.machine.Machine;
 import org.eventb.emf.core.machine.MachineFactory;
 
 import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
+class ClassNameInputDialog {
+
+	public static String nameOfEClass(String title, String message, String initialValue) {
+		String className = null;
+		Shell shell = getShell();
+		InputDialog inputDialog = new InputDialog(shell, title, message, initialValue, null);
+		int classNameDialog = inputDialog.open();
+		if (classNameDialog == Window.OK) {
+			className = inputDialog.getValue();
+		}
+		return className;
+	}
+
+	private static Shell getShell() {
+		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+	}
+
+}
 
 class CreateEventBContextFeature extends AbstractCreateFeature {
+	
+	private static final String dialogTitle = "Create Context";
+	 
+    private static final String USER_QUESTION = "Enter new context name";
+	
 	public CreateEventBContextFeature(IFeatureProvider fp) {
 		super(fp, "Context", "An EventB Context"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -61,9 +88,14 @@ class CreateEventBContextFeature extends AbstractCreateFeature {
 
 	@Override
 	public Object[] create(ICreateContext context) {
+		String newClassName = ClassNameInputDialog.nameOfEClass(dialogTitle, USER_QUESTION, "");
+	       if (newClassName == null || newClassName.trim().length() == 0) {
+	           return EMPTY;
+	       }
 		final Context c = ContextFactory.eINSTANCE.createContext();
 		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
 		.getComponents().add(c);
+		c.setName(newClassName);
 		this.addGraphicalRepresentation(context, c);
 		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
 
@@ -74,6 +106,11 @@ class CreateEventBContextFeature extends AbstractCreateFeature {
 }
 
 class CreateEventBMachineFeature extends AbstractCreateFeature {
+	
+	private static final String dialogTitle = "Create Machine";
+	 
+    private static final String USER_QUESTION = "Enter new machine name";
+	
 	public CreateEventBMachineFeature(IFeatureProvider fp) {
 		super(fp, "Machine", "An EventB Machine"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -87,12 +124,17 @@ class CreateEventBMachineFeature extends AbstractCreateFeature {
 
 	@Override
 	public Object[] create(ICreateContext context) {
+		String newClassName = ClassNameInputDialog.nameOfEClass(dialogTitle, USER_QUESTION, "");
+	       if (newClassName == null || newClassName.trim().length() == 0) {
+	           return EMPTY;
+	       }
 		final Machine m = MachineFactory.eINSTANCE.createMachine();
 		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
 		.getComponents().add(m);
+		m.setName(newClassName);;
 		this.addGraphicalRepresentation(context, m);
 		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
-
+		
 		// ((EventBDiagramFeatureProvider)this.getFeatureProvider()).save();
 		return new Object[] { m };
 	}
@@ -157,7 +199,7 @@ class EventBComponentAddFeature extends AbstractAddShapeFeature {
 			text.setFont(gaService.manageFont(this.getDiagram(), "Arial", 10, //$NON-NLS-1$
 					false, false));
 			gaService.setLocationAndSize(text, 0, 0, width, 20);
-
+			
 			// create link and wire it
 			this.link(shape, element);
 		}

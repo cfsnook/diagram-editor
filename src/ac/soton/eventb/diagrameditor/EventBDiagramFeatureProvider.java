@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -29,6 +31,10 @@ import org.eclipse.graphiti.features.context.IDirectEditingContext;
 import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.impl.IIndependenceSolver;
 import org.eclipse.graphiti.ui.features.DefaultFeatureProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eventb.emf.core.EventBElement;
 import org.eventb.emf.core.EventBObject;
 import org.eventb.emf.core.Project;
@@ -94,17 +100,35 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 	private final EventBFeatureFactory<IDeleteContext, IDeleteFeature> eventBDeleteFeatureFactory;
 	private final EventBFeatureFactory<IDirectEditingContext, IDirectEditingFeature> eventBDirectEditingFeatureFactory;
 	private final EventBFeatureFactory<IUpdateContext, IUpdateFeature> eventBUpdateFeatureFactory;
-
+	
 	final ProjectResource pr;
 
 	public EventBDiagramFeatureProvider(IDiagramTypeProvider dtp) {
 		super(dtp);
-
+		IFile file = null;
+		IProject project = null;
+		String projectPath = null;
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		
+	    if (window != null)
+	    {
+	        IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection();
+	        Object firstElement = selection.getFirstElement();
+	        if(firstElement instanceof IFile){
+	        	 file = (IFile) firstElement;
+	        	 projectPath = file.getFullPath().toString();
+	        }
+	        if(file == null){
+	        	project = (IProject)firstElement;
+	        	projectPath = project.getFullPath().toString();
+	        }
+	    }
+	    
 		final ResourceSet rs = new ResourceSetImpl();
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap()
 		.put("*", new ProjectFactory()); //$NON-NLS-1$
 		this.pr = (ProjectResource) rs.createResource(URI
-				.createPlatformResourceURI("DemoProject", true)); //$NON-NLS-1$
+				.createPlatformResourceURI(projectPath, true)); //$NON-NLS-1$
 		try {
 			this.pr.load(new HashMap<>());
 		} catch (final IOException e) {
