@@ -26,9 +26,11 @@ import org.eclipse.graphiti.features.IDeleteFeature;
 import org.eclipse.graphiti.features.IDirectEditingFeature;
 import org.eclipse.graphiti.features.IUpdateFeature;
 import org.eclipse.graphiti.features.context.IAddContext;
+import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.context.IDeleteContext;
 import org.eclipse.graphiti.features.context.IDirectEditingContext;
 import org.eclipse.graphiti.features.context.IUpdateContext;
+import org.eclipse.graphiti.features.custom.ICustomFeature;
 import org.eclipse.graphiti.features.impl.IIndependenceSolver;
 import org.eclipse.graphiti.ui.features.DefaultFeatureProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -228,7 +230,11 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 	public IUpdateFeature getUpdateFeature(IUpdateContext context) {
 		return this.eventBUpdateFeatureFactory.getFeature(context, this);
 	}
-
+	
+	public ICustomFeature[] getCustomFeatures(ICustomContext context){
+		return new ICustomFeature[]{new ReNameComponentsFeature(this)};
+	}
+	
 	public void save() {
 		try {
 			this.getProjectResource().save(
