@@ -56,6 +56,7 @@ public class ReNameComponentsFeature extends AbstractCustomFeature{
 				String newName = nameOfEClass(getName(), getDescription(), currentName);
 				if(newName != null && !newName.equals(currentName)){
 					m.doSetName(newName);
+					updatePictogramElement(pElement[0]);
 					System.out.println("Hi");
 				}
 			}

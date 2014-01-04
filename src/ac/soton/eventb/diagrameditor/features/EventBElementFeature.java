@@ -93,17 +93,18 @@ class CreateEventBContextFeature extends AbstractCreateFeature {
 
 	@Override
 	public Object[] create(ICreateContext context) {
+		
+		final Context c = ContextFactory.eINSTANCE.createContext();
+		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
+		.getComponents().add(c);
+		
+		this.addGraphicalRepresentation(context, c);
+		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
 		String newClassName = ClassNameInputDialog.nameOfEClass(dialogTitle, USER_QUESTION, "");
 		if (newClassName == null || newClassName.trim().length() == 0) {
 			return EMPTY;
 		}
-		final Context c = ContextFactory.eINSTANCE.createContext();
-		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
-		.getComponents().add(c);
 		c.setName(newClassName);
-		this.addGraphicalRepresentation(context, c);
-		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
-
 		// ((EventBDiagramFeatureProvider)this.getFeatureProvider()).save();
 		return new Object[] { c };
 	}
@@ -133,17 +134,16 @@ class CreateEventBMachineFeature extends AbstractCreateFeature {
 
 	@Override
 	public Object[] create(ICreateContext context) {
+		final Machine m = MachineFactory.eINSTANCE.createMachine();
+		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
+		.getComponents().add(m);
+		this.addGraphicalRepresentation(context, m);
+		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
 		String newClassName = ClassNameInputDialog.nameOfEClass(dialogTitle, USER_QUESTION, "");
 		if (newClassName == null || newClassName.trim().length() == 0) {
 			return EMPTY;
 		}
-		final Machine m = MachineFactory.eINSTANCE.createMachine();
-		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
-		.getComponents().add(m);
-		m.setName(newClassName);;
-		this.addGraphicalRepresentation(context, m);
-		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
-
+		m.setName(newClassName);
 		// ((EventBDiagramFeatureProvider)this.getFeatureProvider()).save();
 		return new Object[] { m };
 	}
