@@ -50,6 +50,7 @@ import org.eventb.emf.core.machine.Machine;
 import org.eventb.emf.core.machine.MachineFactory;
 
 import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
+import ac.soton.eventb.diagrameditor.ImageProvider;
 class ClassNameInputDialog {
 
 	public static String nameOfEClass(String title, String message, String initialValue) {
@@ -78,6 +79,10 @@ class CreateEventBContextFeature extends AbstractCreateFeature {
 	public CreateEventBContextFeature(IFeatureProvider fp) {
 		super(fp, "Context", "An EventB Context"); //$NON-NLS-1$ //$NON-NLS-2$
 
+	}
+	
+	public String getCreateImageId(){
+		return ImageProvider.IMG_CONTEXT;
 	}
 
 	@Override
@@ -116,6 +121,10 @@ class CreateEventBMachineFeature extends AbstractCreateFeature {
 
 	}
 
+	public String getCreateImageId(){
+		return ImageProvider.IMG_MACHINE;
+	}
+	
 	@Override
 	public boolean canCreate(ICreateContext context) {
 		final boolean validContainer = context.getTargetContainer() instanceof Diagram;
@@ -269,7 +278,7 @@ class EventBComponentDirectEditFeature extends AbstractDirectEditingFeature {
 
 	@Override
 	public int getEditingType() {
-		return TYPE_TEXT;
+		return 1;
 	}
 
 	@Override
