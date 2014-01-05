@@ -35,6 +35,7 @@ import org.eventb.emf.core.context.Context;
 import org.eventb.emf.core.machine.Machine;
 
 import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
+import ac.soton.eventb.diagrameditor.ImageProvider;
 import ac.soton.eventb.diagrameditor.relations.ContextExtendsRelation;
 import ac.soton.eventb.diagrameditor.relations.EventBRelation;
 import ac.soton.eventb.diagrameditor.relations.MachineRefinesRelation;
@@ -44,6 +45,10 @@ class CreateExtendsRelationshipFeature extends AbstractCreateConnectionFeature {
 
 	public CreateExtendsRelationshipFeature(IFeatureProvider fp) {
 		super(fp, "Extends", "Create an Event-B Extends Relationship"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	
+	public String getCreateImageId(){
+		return ImageProvider.IMG_EXTENTS;
 	}
 
 	@Override
@@ -94,7 +99,11 @@ class CreateRefinesRelationshipFeature extends AbstractCreateConnectionFeature {
 	public CreateRefinesRelationshipFeature(IFeatureProvider fp) {
 		super(fp, "Refines", "Create an Event-B Refines Relationship"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-
+	
+	public String getCreateImageId(){
+		return ImageProvider.IMG_REFINES;
+	}
+	
 	@Override
 	public boolean canCreate(ICreateConnectionContext context) {
 		final EObject source = (EObject) this
@@ -144,6 +153,10 @@ class CreateSeesRelationshipFeature extends AbstractCreateConnectionFeature {
 		super(fp, "Sees", "Create an Event-B Sees Relationship"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	public String getCreateImageId(){
+		return ImageProvider.IMG_SEES;
+	}
+	
 	@Override
 	public boolean canCreate(ICreateConnectionContext context) {
 		final EObject source = (EObject) this

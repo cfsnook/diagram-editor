@@ -37,6 +37,10 @@ import org.eclipse.graphiti.services.IPeCreateService;
 import org.eclipse.graphiti.ui.features.DefaultDeleteFeature;
 import org.eclipse.graphiti.util.ColorConstant;
 import org.eclipse.graphiti.util.IColorConstant;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.eventb.emf.core.EventBElement;
 import org.eventb.emf.core.EventBNamed;
 import org.eventb.emf.core.EventBNamedCommentedElement;
@@ -46,11 +50,39 @@ import org.eventb.emf.core.machine.Machine;
 import org.eventb.emf.core.machine.MachineFactory;
 
 import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
+import ac.soton.eventb.diagrameditor.ImageProvider;
+class ClassNameInputDialog {
+
+	public static String nameOfEClass(String title, String message, String initialValue) {
+		String className = null;
+		Shell shell = getShell();
+		InputDialog inputDialog = new InputDialog(shell, title, message, initialValue, null);
+		int classNameDialog = inputDialog.open();
+		if (classNameDialog == Window.OK) {
+			className = inputDialog.getValue();
+		}
+		return className;
+	}
+
+	private static Shell getShell() {
+		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+	}
+
+}
 
 class CreateEventBContextFeature extends AbstractCreateFeature {
+
+	private static final String dialogTitle = "Create Context";
+
+	private static final String USER_QUESTION = "Enter new context name";
+
 	public CreateEventBContextFeature(IFeatureProvider fp) {
 		super(fp, "Context", "An EventB Context"); //$NON-NLS-1$ //$NON-NLS-2$
 
+	}
+	
+	public String getCreateImageId(){
+		return ImageProvider.IMG_CONTEXT;
 	}
 
 	@Override
@@ -61,12 +93,18 @@ class CreateEventBContextFeature extends AbstractCreateFeature {
 
 	@Override
 	public Object[] create(ICreateContext context) {
+		
 		final Context c = ContextFactory.eINSTANCE.createContext();
 		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
 		.getComponents().add(c);
+		
 		this.addGraphicalRepresentation(context, c);
 		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
-
+		String newClassName = ClassNameInputDialog.nameOfEClass(dialogTitle, USER_QUESTION, "");
+		if (newClassName == null || newClassName.trim().length() == 0) {
+			return EMPTY;
+		}
+		c.setName(newClassName);
 		// ((EventBDiagramFeatureProvider)this.getFeatureProvider()).save();
 		return new Object[] { c };
 	}
@@ -74,11 +112,20 @@ class CreateEventBContextFeature extends AbstractCreateFeature {
 }
 
 class CreateEventBMachineFeature extends AbstractCreateFeature {
+
+	private static final String dialogTitle = "Create Machine";
+
+	private static final String USER_QUESTION = "Enter new machine name";
+
 	public CreateEventBMachineFeature(IFeatureProvider fp) {
 		super(fp, "Machine", "An EventB Machine"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	}
 
+	public String getCreateImageId(){
+		return ImageProvider.IMG_MACHINE;
+	}
+	
 	@Override
 	public boolean canCreate(ICreateContext context) {
 		final boolean validContainer = context.getTargetContainer() instanceof Diagram;
@@ -92,7 +139,11 @@ class CreateEventBMachineFeature extends AbstractCreateFeature {
 		.getComponents().add(m);
 		this.addGraphicalRepresentation(context, m);
 		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
-
+		String newClassName = ClassNameInputDialog.nameOfEClass(dialogTitle, USER_QUESTION, "");
+		if (newClassName == null || newClassName.trim().length() == 0) {
+			return EMPTY;
+		}
+		m.setName(newClassName);
 		// ((EventBDiagramFeatureProvider)this.getFeatureProvider()).save();
 		return new Object[] { m };
 	}
@@ -227,7 +278,7 @@ class EventBComponentDirectEditFeature extends AbstractDirectEditingFeature {
 
 	@Override
 	public int getEditingType() {
-		return TYPE_TEXT;
+		return 1;
 	}
 
 	@Override
