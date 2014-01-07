@@ -23,5 +23,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: ac.soton.eventb.diagrameditor,
  ac.soton.eventb.diagrameditor.features
-Import-Package: org.eclipse.gef,
- org.eclipse.gmf.runtime.diagram.ui.l10n
+Import-Package: org.eclipse.gef
