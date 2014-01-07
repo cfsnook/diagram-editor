@@ -187,8 +187,10 @@ class EventBComponentAddFeature extends AbstractAddShapeFeature {
 			rr.setForeground(this.manageColor(CLASS_FOREGROUND));
 			if(element instanceof Machine) {
 				rr.setBackground(this.manageColor(MACHINE_BACKGROUND));
-			} else {
+			} else if (element instanceof Context) {
 				rr.setBackground(this.manageColor(CONTEXT_BACKGROUND));
+			} else {
+				rr.setBackground(this.manageColor(CLASS_BACKGROUND));
 			}
 			rr.setLineWidth(new Integer(2));
 			gaService.setLocationAndSize(rr, context.getX(), context.getY(),
