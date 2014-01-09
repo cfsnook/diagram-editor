@@ -1,0 +1,40 @@
+Introduction
+------------
+
+The Rodin Diagram Editor is based on Eclipse Graphiti which is a toolkit for creating visualisations of business objects. It has best support for EMF objects, but can support Plain Old Java Objects as well. The diagram editor reads from the org.eventb.emf.persistence plugin, performs some translations, especially to relationships, and then displays them using Graphiti.
+
+Prior Reading
+-------------
+
+To work with the Diagram Editor plugin it is essential you have a good understanding of the Event-B EMF model, EMF in general and Graphiti. No knowledge of GMF or GEF is necessary, and it will in general be unhelpful to think in terms of those tools while working with the plugin.
+
+Working With The Code
+---------------------
+
+The code is made up of three packages.
+
+- org.eventb.diagrameditor provides the base support for the user interface and loading of Features
+- .features provides the base feature set that is provided by this plugin, and also includes some base classes useful to plugin developers
+- .relations provides translation into Plain Old Java Objects from the relations stored in EMF. All relations need an object backing them, and in this case they are provided by these classes.
+
+Features are objects which support user operations on the diagram. They provide support for creating business objects, adding them to the diagram, removing the visual representation and deleting the business object. Also special features such as rename can be supported if the need arises.
+
+To read the code it is best to start from the EventBDiagramFeatureProvider which provides the core of the functionality.
+
+At runtime it
+1. Loads the bundled Features
+2. Loads any extension Features
+3. Registers handlers in Graphiti
+
+As handlers are called, Features that have been discovered are called to provide support for the required functionality.
+
+Writing a Plugin
+----------------
+
+To make your plugin support the diagram editor you must first ensure you have good quality EMF support for save and load. Bugs in this layer heavily affect the quality of the diagram editors display, so accuracy here is vital.
+
+Once this has been implemented, you can implement the diagram editor extension point, by implementing IEventBFeature. In this interace you must return true for any handler your project is capable of providing.
+
+If your Feature returns true for a given action (in this example add), its matcher is called with the informationr required for your plugin to decide if it can perform this action. For example an Add handler will be passed an object that subclasses EObject. Your plugin must then return true if it can perform actions on that object. The matcher is then called with getFeature. This feature is a Graphiti feature that performs actions on the diagram. See the example code or documentation for implementations of these.
+
+It is important that your matcher is very granular. Many matchers can be called for each action, so if your plugin does not provide specific support, it should return false so that a plugin which does support it can attempt it instead.

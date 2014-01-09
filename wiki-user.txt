@@ -1,0 +1,57 @@
+Introduction
+------------
+
+The Rodin Diagram Editor provides a component level view of an Event-B project. Specifically in its core distribution it provides:
+ 
+ - Machines
+ - Contexts
+ - Sees
+ - Refines
+ - Extends
+ - Unknown Plugin
+
+Within a diagram there is the Canvas, this represents the entirety of one project.
+ 
+Next are the components, these are individual elements such as Machines or Contexts that can be Created, Deleted or Renamed.
+
+Relations can be created between components. For example a Context can be made to See a Machine.
+
+When a diagram is created or opened in a project, it automatically scans for updates, and adds all elements that are not included on the diagram to the canvas. Relations are also added to the diagram.
+
+When you make a change, these changes do not immediately take effect. You can undo and redo changes to the diagram until you are happy with your project structure. Once you are satisfied, click Save and changes to the diagram will be synchronised with your project.
+
+Usage
+------
+
+To create a new component simply click on it in the Palette, click where you would like to create it, and then enter a name at the prompt. In some cases you may need to choose the 'refresh' button that appears to make your new name appear. If this is needed, the new element will be surrounded in red dashed lines.
+
+To delete a component, hover over it and choose the trashcan icon that appears.
+
+To create a relationship, choose the relationship from the Palette, then drag from the first element to the second. For example, in the Machine refines Machine relation, drag from the Machine that is being refined, to the Machine that it refines.
+
+To rename an element, either click twice on the name, or right click and choose 'rename'.
+
+Troubleshooting
+---------------
+
+In the event of problems with the diagram, try these troubleshooting steps. Never save a diagram that does not represent your desired project layout.
+
+1. Close the diagram without saving it.
+2. Reopen the diagram
+3. Press the 'refresh' button for any element highlighted in red dashes
+
+If this has not solved the problem:
+1. Close the diagram without saving
+2. Delete the diagram.
+3. Close and Restart Rodin
+4. Create a new diagram.
+
+
+Plugins
+-------
+
+In the future, developers may extend their plugins to contribute components, relationships and even more advanced features to the diagram.
+
+If your chosen plugin supports this, simply installing the latest version will enable it in the diagram. There is no separate installation process beyond installing the plugin.
+
+If you have a plugin that contributes to the EMF data layer, but does not have a diagram editing mode, it cannot show relationships. However, any named components that it produces will be visible on the diagram in the 'unknown plugin' colour. While you cannot create new elements of this type, you can move, rename and delete it. 
