@@ -27,7 +27,7 @@ public class ReNameComponentsFeature extends AbstractCustomFeature{
 	}
 	
 	public String getDescription(){
-		return "Re-name the name of the current selected component";
+		return "Change the name of the currently selected component";
 	}
 	
 	public boolean canExecute(ICustomContext context){
@@ -39,7 +39,7 @@ public class ReNameComponentsFeature extends AbstractCustomFeature{
 				exe = true;
 			}
 		}
-		System.out.println(exe);
+		//System.out.println(exe);
 		return exe;
 	}
 	
@@ -55,9 +55,9 @@ public class ReNameComponentsFeature extends AbstractCustomFeature{
 				String currentName = m.getName();
 				String newName = nameOfEClass(getName(), getDescription(), currentName);
 				if(newName != null && !newName.equals(currentName)){
-					m.doSetName(newName);
+					m.setName(newName);
 					updatePictogramElement(pElement[0]);
-					System.out.println("Hi");
+					//System.out.println("Hi");
 				}
 			}
 			else if(ob instanceof Context){
@@ -66,9 +66,9 @@ public class ReNameComponentsFeature extends AbstractCustomFeature{
 				String currentName = c.getName();
 				String newName = nameOfEClass(getName(), getDescription(), currentName);
 				if(newName != null && !newName.equals(currentName)){
-					c.doSetName(newName);
+					c.setName(newName);
 					updatePictogramElement(pElement[0]);
-					System.out.println("Hi");
+					//System.out.println("Hi");
 				}
 			}
 		}

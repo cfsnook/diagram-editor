@@ -46,11 +46,14 @@ import org.eventb.emf.core.EventBNamed;
 import org.eventb.emf.core.EventBNamedCommentedElement;
 import org.eventb.emf.core.context.Context;
 import org.eventb.emf.core.context.ContextFactory;
+import org.eventb.emf.core.machine.Event;
 import org.eventb.emf.core.machine.Machine;
 import org.eventb.emf.core.machine.MachineFactory;
 
 import ac.soton.eventb.diagrameditor.EventBDiagramFeatureProvider;
 import ac.soton.eventb.diagrameditor.ImageProvider;
+
+
 class ClassNameInputDialog {
 
 	public static String nameOfEClass(String title, String message, String initialValue) {
@@ -93,22 +96,18 @@ class CreateEventBContextFeature extends AbstractCreateFeature {
 
 	@Override
 	public Object[] create(ICreateContext context) {
-		
 		final Context c = ContextFactory.eINSTANCE.createContext();
-		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
-		.getComponents().add(c);
-		
-		this.addGraphicalRepresentation(context, c);
-		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
 		String newClassName = ClassNameInputDialog.nameOfEClass(dialogTitle, USER_QUESTION, "");
 		if (newClassName == null || newClassName.trim().length() == 0) {
 			return EMPTY;
 		}
 		c.setName(newClassName);
+		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject().getComponents().add(c);
+		this.addGraphicalRepresentation(context, c);
+		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
 		// ((EventBDiagramFeatureProvider)this.getFeatureProvider()).save();
 		return new Object[] { c };
 	}
-
 }
 
 class CreateEventBMachineFeature extends AbstractCreateFeature {
@@ -135,15 +134,17 @@ class CreateEventBMachineFeature extends AbstractCreateFeature {
 	@Override
 	public Object[] create(ICreateContext context) {
 		final Machine m = MachineFactory.eINSTANCE.createMachine();
-		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject()
-		.getComponents().add(m);
-		this.addGraphicalRepresentation(context, m);
-		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
 		String newClassName = ClassNameInputDialog.nameOfEClass(dialogTitle, USER_QUESTION, "");
 		if (newClassName == null || newClassName.trim().length() == 0) {
 			return EMPTY;
 		}
 		m.setName(newClassName);
+		Event init =  MachineFactory.eINSTANCE.createEvent();
+		init.setName("INITIALISATION");
+		m.getEvents().add(init);
+		((EventBDiagramFeatureProvider) this.getFeatureProvider()).getProject().getComponents().add(m);
+		this.addGraphicalRepresentation(context, m);
+		this.getFeatureProvider().getDirectEditingInfo().setActive(true);
 		// ((EventBDiagramFeatureProvider)this.getFeatureProvider()).save();
 		return new Object[] { m };
 	}
@@ -155,9 +156,9 @@ class EventBComponentAddFeature extends AbstractAddShapeFeature {
 	private static final IColorConstant CLASS_BACKGROUND = new ColorConstant(
 			255, 255, 255);
 	private static final IColorConstant MACHINE_BACKGROUND = new ColorConstant(
-			255, 200, 255);
-	private static final IColorConstant CONTEXT_BACKGROUND = new ColorConstant(
 			200, 200, 255);
+	private static final IColorConstant CONTEXT_BACKGROUND = new ColorConstant(
+			255, 200, 255);
 	private static final IColorConstant CLASS_FOREGROUND = new ColorConstant(
 			100, 50, 50);
 
@@ -294,7 +295,7 @@ class EventBComponentDirectEditFeature extends AbstractDirectEditingFeature {
 		final PictogramElement pe = context.getPictogramElement();
 		final EventBNamed element = (EventBNamed) this
 				.getBusinessObjectForPictogramElement(pe);
-		element.doSetName(value);
+		element.setName(value);
 
 		this.updatePictogramElement(((Shape) pe).getContainer());
 	}
