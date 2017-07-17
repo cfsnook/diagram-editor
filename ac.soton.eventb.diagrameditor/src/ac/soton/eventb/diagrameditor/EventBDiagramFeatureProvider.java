@@ -115,7 +115,7 @@ public class EventBDiagramFeatureProvider extends DefaultFeatureProvider {
 	    if (window != null)
 	    {
 	        IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection();
-	        Object firstElement = selection.getFirstElement();
+	        Object firstElement = selection==null? null : selection.getFirstElement();
 	        if(firstElement instanceof IFile){
 	        	 file = (IFile) firstElement;
 	        	 projectPath = file.getFullPath().toString();
