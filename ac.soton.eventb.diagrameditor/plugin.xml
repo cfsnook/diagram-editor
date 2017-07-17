@@ -28,8 +28,8 @@
          point="org.eclipse.ui.editors">
       <editor
             class="org.eclipse.graphiti.ui.editor.DiagramEditor"
-            default="false"
-            extensions="diagram"
+            default="true"
+            extensions="pjd"
             icon="icon.png"
             id="diagram-editor.diagram-editor"
             name="Diagram Editor">
